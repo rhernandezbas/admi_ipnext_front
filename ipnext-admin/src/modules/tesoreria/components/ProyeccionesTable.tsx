@@ -22,7 +22,7 @@ export function ProyeccionesTable({ proyecciones }: { proyecciones: ProyeccionIt
           <CartesianGrid strokeDasharray="3 3" stroke="#E8E8E8" />
           <XAxis dataKey="mes" tick={{ fontSize: 12, fill: '#7A7A7A' }} />
           <YAxis tick={{ fontSize: 12, fill: '#7A7A7A' }} tickFormatter={(v: number) => `$${(v / 1000000).toFixed(1)}M`} />
-          <Tooltip formatter={(v: number | string | undefined) => [`$${Number(v ?? 0).toLocaleString('es-AR')}`, '']} />
+          <Tooltip formatter={(v) => [`$${Number(v ?? 0).toLocaleString('es-AR')}`, '']} />
           <Legend />
           <Area type="monotone" dataKey="ingresos" name="Ingresos" stroke="#22C55E" fill="#DCFCE7" />
           <Area type="monotone" dataKey="egresos" name="Egresos" stroke="#E42313" fill="#FEE2E2" />

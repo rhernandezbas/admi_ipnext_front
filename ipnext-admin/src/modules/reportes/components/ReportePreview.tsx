@@ -22,7 +22,7 @@ export function ReportePreview({ data }: { data: ReportePreviewData }) {
               <Cell key={i} fill={COLORS[i % COLORS.length]} />
             ))}
           </Pie>
-          <Tooltip formatter={(v: number | string | undefined) => [`$${Number(v ?? 0).toLocaleString('es-AR')}`, '']} />
+          <Tooltip formatter={(v) => [`$${Number(v ?? 0).toLocaleString('es-AR')}`, '']} />
           <Legend />
         </PieChart>
       </ResponsiveContainer>
