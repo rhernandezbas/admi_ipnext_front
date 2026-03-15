@@ -8,17 +8,17 @@ export const inmueblesMock: Inmueble[] = [
 ]
 
 export const contratosAlquilerMock: ContratoAlquiler[] = [
-  { id: '1', inmueble: 'Sede Central', direccion: 'Av. Corrientes 1234, CABA', propietario: 'Carlos Pérez', vigenciaDesde: '2024-01-01', vigenciaHasta: '2026-12-31', ajuste: 'Semestral ICL', alquilerMensual: 180000, estado: 'vigente' },
-  { id: '2', inmueble: 'Depósito Norte', direccion: 'Ruta 8 km 32, GBA', propietario: 'Inversiones SA', vigenciaDesde: '2024-06-01', vigenciaHasta: '2026-05-01', ajuste: 'Trimestral IPC', alquilerMensual: 95000, estado: 'por_vencer' },
-  { id: '3', inmueble: 'Nodo Zona Sur', direccion: 'Av. H. Yrigoyen 567', propietario: 'Roberto García', vigenciaDesde: '2023-03-01', vigenciaHasta: '2026-03-01', ajuste: '6 meses', alquilerMensual: 45000, estado: 'vencido' },
-  { id: '4', inmueble: 'Oficina Administrativa', direccion: 'M. T. de Alvear 890', propietario: 'María López', vigenciaDesde: '2025-01-01', vigenciaHasta: '2027-12-31', ajuste: 'Anual UVA', alquilerMensual: 220000, estado: 'vigente' },
+  { id: '1', inmuebleId: '1', inmuebleNombre: 'Sede Central', direccion: 'Av. Corrientes 1234, CABA', propietario: 'Carlos Pérez', vigenciaDesde: '2024-01-01', vigenciaHasta: '2026-12-31', ajusteFrecuencia: 'Semestral ICL', montoMensual: 180000, estado: 'vigente' },
+  { id: '2', inmuebleId: '2', inmuebleNombre: 'Depósito Norte', direccion: 'Ruta 8 km 32, GBA', propietario: 'Inversiones SA', vigenciaDesde: '2024-06-01', vigenciaHasta: '2026-05-01', ajusteFrecuencia: 'Trimestral IPC', montoMensual: 95000, estado: 'por_vencer' },
+  { id: '3', inmuebleId: '3', inmuebleNombre: 'Nodo Zona Sur', direccion: 'Av. H. Yrigoyen 567', propietario: 'Roberto García', vigenciaDesde: '2023-03-01', vigenciaHasta: '2026-03-01', ajusteFrecuencia: '6 meses', montoMensual: 45000, estado: 'vencido' },
+  { id: '4', inmuebleId: '4', inmuebleNombre: 'Oficina Administrativa', direccion: 'M. T. de Alvear 890', propietario: 'María López', vigenciaDesde: '2025-01-01', vigenciaHasta: '2027-12-31', ajusteFrecuencia: 'Anual UVA', montoMensual: 220000, estado: 'vigente' },
 ]
 
 export const pagosAlquilerMock: PagoAlquiler[] = [
-  { id: '1', inmueble: 'Sede Central', periodo: '2026-03', fechaPago: '2026-03-05', monto: 180000, nroRecibo: 'REC-2026-031', estado: 'pagado' },
-  { id: '2', inmueble: 'Depósito Norte', periodo: '2026-03', fechaPago: '2026-03-03', monto: 95000, nroRecibo: 'REC-2026-032', estado: 'pagado' },
-  { id: '3', inmueble: 'Nodo Zona Sur', periodo: '2026-03', fechaPago: '', monto: 45000, estado: 'pendiente' },
-  { id: '4', inmueble: 'Oficina Administrativa', periodo: '2026-03', fechaPago: '2026-03-01', monto: 220000, nroRecibo: 'REC-2026-033', estado: 'pagado' },
+  { id: '1', inmuebleId: '1', inmuebleNombre: 'Sede Central', periodo: '2026-03', fechaPago: '2026-03-05', monto: 180000, nroRecibo: 'REC-2026-031', estado: 'pagado' },
+  { id: '2', inmuebleId: '2', inmuebleNombre: 'Depósito Norte', periodo: '2026-03', fechaPago: '2026-03-03', monto: 95000, nroRecibo: 'REC-2026-032', estado: 'pagado' },
+  { id: '3', inmuebleId: '3', inmuebleNombre: 'Nodo Zona Sur', periodo: '2026-03', monto: 45000, estado: 'pendiente' },
+  { id: '4', inmuebleId: '4', inmuebleNombre: 'Oficina Administrativa', periodo: '2026-03', fechaPago: '2026-03-01', monto: 220000, nroRecibo: 'REC-2026-033', estado: 'pagado' },
 ]
 
 export const vencimientosMock: VencimientoAlquiler[] = [

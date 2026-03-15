@@ -15,21 +15,23 @@ export interface Inmueble {
 
 export interface ContratoAlquiler {
   id: string
-  inmueble: string
-  direccion: string
-  propietario: string
+  inmuebleId: string
+  inmuebleNombre?: string
+  direccion?: string
+  propietario?: string
   vigenciaDesde: string
   vigenciaHasta: string
-  ajuste: string
-  alquilerMensual: number
+  ajusteFrecuencia: string
+  montoMensual: number
   estado: ContratoAlquilerEstado
 }
 
 export interface PagoAlquiler {
   id: string
-  inmueble: string
+  inmuebleId: string
+  inmuebleNombre?: string
   periodo: string
-  fechaPago: string
+  fechaPago?: string
   monto: number
   nroRecibo?: string
   estado: 'pagado' | 'pendiente'

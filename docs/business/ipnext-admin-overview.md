@@ -32,9 +32,13 @@ Las empresas medianas gestionan sus pagos y obligaciones en planillas dispersas,
 
 | Capa | Tecnología |
 |------|-----------|
-| Frontend | React (SPA) |
-| Backend | API REST propia (desarrollo posterior al frontend) |
-| Autenticación | JWT — roles Admin / Sub-usuario |
+| Frontend | React 19 + TypeScript + Vite (SPA) |
+| Estilos | Tailwind CSS v4 |
+| Estado | Zustand (auth) + TanStack Query (server state) |
+| HTTP | Axios con `withCredentials: true` + interceptor de envelope `{ data }` |
+| Backend | Go + Gin + GORM + MariaDB (48 endpoints, ver `administracion-backend/docs/`) |
+| Autenticación | JWT en httpOnly cookie — roles Admin / Sub-usuario |
+| Tests | Vitest + jsdom + axios-mock-adapter |
 
 ## Design System
 

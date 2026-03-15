@@ -1,7 +1,7 @@
 # TDR-001: Arquitectura de Componentes React
 
 ## Estado
-Propuesto
+Implementado
 
 ## Contexto
 IPNEXT Admin es una SPA en React con 8 módulos y ~29 vistas. Necesitamos definir cómo organizar los componentes para que sea mantenible, escalable y consistente con el design system del archivo Pencil.
@@ -53,7 +53,7 @@ src/
     useNominas.ts
     ...
   services/           # Llamadas a la API REST
-    api.ts            # cliente base (fetch/axios)
+    api.ts            # cliente Axios con withCredentials + interceptor de envelope
     transferencias.service.ts
     nominas.service.ts
     ...
@@ -76,6 +76,20 @@ src/
 3. **Custom hooks** encapsulan fetch + estado local por pantalla.
 4. **Services** son funciones puras que llaman a la API — sin estado.
 5. **Un archivo por componente** — no mezclar múltiples componentes en un archivo.
+
+## Tests
+
+```
+src/
+  lib/__tests__/         # Tests del cliente API (axios config, interceptors)
+  services/__tests__/    # Tests de servicios por módulo
+  store/__tests__/       # Tests del store de autenticación
+  types/__tests__/       # Tests de tipos TypeScript (contratos de tipos)
+```
+
+- Framework de tests: **Vitest** + jsdom + `@testing-library/react`
+- Mock HTTP: **axios-mock-adapter**
+- Correr con: `npm test` (vitest run) o `npm run test:watch`
 
 ## Consecuencias
 - Positivo: separación clara entre UI, lógica y datos.

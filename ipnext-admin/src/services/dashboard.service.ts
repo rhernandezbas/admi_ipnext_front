@@ -1,15 +1,46 @@
 import { api } from '@/lib/api'
-import type { Kpi, UrgentPayment, ExpenseDataPoint, ActivityItem } from '@/types/dashboard.types'
+import type { Kpi, KpisBackend, PagoUrgente, DistribucionEgreso, ActividadItem } from '@/types/dashboard.types'
+
+function transformKpis(raw: KpisBackend): Kpi[] {
+  return [
+    {
+      id: 'total-pagos-mes',
+      label: 'Total Pagos Mes',
+      value: `$${raw.totalPagosMes.toLocaleString('es-AR')}`,
+      iconBg: 'bg-red-50',
+    },
+    {
+      id: 'pagos-pendientes',
+      label: 'Pagos Pendientes',
+      value: String(raw.pagosPendientes),
+      iconBg: 'bg-yellow-50',
+    },
+    {
+      id: 'flujo-caja',
+      label: 'Flujo de Caja',
+      value: `$${raw.flujoCajaMes.toLocaleString('es-AR')}`,
+      iconBg: 'bg-blue-50',
+    },
+    {
+      id: 'costo-nomina',
+      label: 'Costo Nómina',
+      value: `$${raw.costoNominaMes.toLocaleString('es-AR')}`,
+      subtitle: `${raw.totalEmpleados} empleados`,
+      iconBg: 'bg-green-50',
+    },
+  ]
+}
 
 export const dashboardService = {
-  getKpis: () => api.get<Kpi[]>('/dashboard/kpis').then((r) => r.data),
+  getKpis: () =>
+    api.get<KpisBackend>('/dashboard/kpis').then((r) => transformKpis(r.data)),
 
   getPagosUrgentes: () =>
-    api.get<UrgentPayment[]>('/dashboard/pagos-urgentes').then((r) => r.data),
+    api.get<PagoUrgente[]>('/dashboard/pagos-urgentes').then((r) => r.data),
 
   getDistribucionEgresos: () =>
-    api.get<ExpenseDataPoint[]>('/dashboard/distribucion-egresos').then((r) => r.data),
+    api.get<DistribucionEgreso[]>('/dashboard/distribucion-egresos').then((r) => r.data),
 
   getActividadReciente: () =>
-    api.get<ActivityItem[]>('/dashboard/actividad-reciente').then((r) => r.data),
+    api.get<ActividadItem[]>('/dashboard/actividad-reciente').then((r) => r.data),
 }

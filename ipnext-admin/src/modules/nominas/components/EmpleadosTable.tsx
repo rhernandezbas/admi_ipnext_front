@@ -31,7 +31,7 @@ export function EmpleadosTable({ empleados, resumen }: Props) {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-[#FAFAFA] border-b border-[#E8E8E8]">
-                {['Empleado', 'Rol', 'Cargo', 'Sueldo Base', 'Obra Social', 'Neto Mes'].map((h) => (
+                {['Empleado', 'Rol', 'Puesto', 'Sueldo Bruto', 'Obra Social', 'Ingreso'].map((h) => (
                   <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-[#7A7A7A] uppercase tracking-wide">{h}</th>
                 ))}
               </tr>
@@ -47,10 +47,10 @@ export function EmpleadosTable({ empleados, resumen }: Props) {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-[#7A7A7A]">{e.rol}</td>
-                  <td className="px-4 py-3 text-[#7A7A7A]">{e.cargo}</td>
-                  <td className="px-4 py-3 font-semibold">${e.sueldoBase.toLocaleString('es-AR')}</td>
+                  <td className="px-4 py-3 text-[#7A7A7A]">{e.puesto}</td>
+                  <td className="px-4 py-3 font-semibold">${e.sueldoBruto.toLocaleString('es-AR')}</td>
                   <td className="px-4 py-3 text-[#7A7A7A]">{e.obraSocial}</td>
-                  <td className="px-4 py-3 font-semibold text-[#22C55E]">${e.netoMes.toLocaleString('es-AR')}</td>
+                  <td className="px-4 py-3 text-[#7A7A7A]">{e.fechaIngreso}</td>
                 </tr>
               ))}
             </tbody>

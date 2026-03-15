@@ -7,7 +7,7 @@ export function PagosRecibosTable({ pagos }: { pagos: PagoAlquiler[] }) {
   const safePagos = Array.isArray(pagos) ? pagos : []
   const totalAcumulado = safePagos.filter((p) => p.estado === 'pagado').reduce((a, p) => a + p.monto, 0)
   const pendientes = safePagos.filter((p) => p.estado === 'pendiente').length
-  const ultimoPago = safePagos.filter((p) => p.fechaPago).sort((a, b) => b.fechaPago.localeCompare(a.fechaPago))[0]
+  const ultimoPago = safePagos.filter((p) => p.fechaPago).sort((a, b) => (b.fechaPago ?? '').localeCompare(a.fechaPago ?? ''))[0]
 
   return (
     <div>
@@ -30,7 +30,7 @@ export function PagosRecibosTable({ pagos }: { pagos: PagoAlquiler[] }) {
           <tbody>
             {safePagos.map((p) => (
               <tr key={p.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
-                <td className="px-4 py-3 font-medium">{p.inmueble}</td>
+                <td className="px-4 py-3 font-medium">{p.inmuebleNombre ?? p.inmuebleId}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{p.periodo}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{p.fechaPago || '—'}</td>
                 <td className="px-4 py-3 font-semibold">${p.monto.toLocaleString('es-AR')}</td>

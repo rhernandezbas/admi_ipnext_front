@@ -56,6 +56,7 @@ export default function DashboardPage() {
             <div className="text-sm text-red-500">Error al cargar actividad</div>
           ) : (
             <ActivityFeed items={actividadQuery.data ?? []} />
+
           )}
         </Card>
       </div>

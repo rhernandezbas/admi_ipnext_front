@@ -23,7 +23,7 @@ export default function NominasPage() {
   const compensacionesQuery = useCompensaciones()
 
   const empleados = empleadosQuery.data ?? []
-  const totalBruto = empleados.reduce((acc, e) => acc + e.sueldoBase, 0)
+  const totalBruto = empleados.reduce((acc, e) => acc + e.sueldoBruto, 0)
   const cargasSociales = Math.round(totalBruto * 0.30)
   const netoAPagar = totalBruto - cargasSociales
   const resumen = { totalBruto, cargasSociales, netoAPagar, empleadosConAumento: 0, liquidacionesPendientes: 0 }

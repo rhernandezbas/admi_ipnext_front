@@ -4,21 +4,22 @@ import { CalendarClock, DollarSign, CreditCard, ListOrdered } from 'lucide-react
 import type { Compensacion, CompensacionTipo, CompensacionEstado } from '@/types/nomina.types'
 
 const tipoLabel: Record<CompensacionTipo, string> = {
-  vacaciones: 'Vacaciones',
-  bono_productividad: 'Bono Productividad',
-  adelanto_sueldo: 'Adelanto de Sueldo',
+  bono: 'Bono',
+  adelanto: 'Adelanto de Sueldo',
+  extra: 'Extra',
+  otro: 'Otro',
 }
 
 function estadoBadge(estado: CompensacionEstado) {
   if (estado === 'aprobado') return <Badge variant="success">Aprobado</Badge>
   if (estado === 'pendiente') return <Badge variant="warning">Pendiente de Aprobación</Badge>
-  return <Badge variant="info">En cuotas</Badge>
+  return <Badge variant="neutral">Rechazado</Badge>
 }
 
 export function CompensacionesTable({ compensaciones }: { compensaciones: Compensacion[] }) {
   const safeCompensaciones = Array.isArray(compensaciones) ? compensaciones : []
   const totalMonto = safeCompensaciones.reduce((a, c) => a + Math.abs(c.monto), 0)
-  const adelantos = safeCompensaciones.filter((c) => c.tipo === 'adelanto_sueldo').reduce((a, c) => a + Math.abs(c.monto), 0)
+  const adelantos = safeCompensaciones.filter((c) => c.tipo === 'adelanto').reduce((a, c) => a + Math.abs(c.monto), 0)
   const pendientes = safeCompensaciones.filter((c) => c.estado === 'pendiente').length
 
   return (
@@ -33,7 +34,7 @@ export function CompensacionesTable({ compensaciones }: { compensaciones: Compen
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-[#FAFAFA] border-b border-[#E8E8E8]">
-              {['Empleado', 'Tipo', 'Detalle', 'Monto', 'Período', 'Estado'].map((h) => (
+              {['Empleado', 'Tipo', 'Descripción', 'Monto', 'Fecha', 'Estado'].map((h) => (
                 <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-[#7A7A7A] uppercase tracking-wide">{h}</th>
               ))}
             </tr>
@@ -41,13 +42,13 @@ export function CompensacionesTable({ compensaciones }: { compensaciones: Compen
           <tbody>
             {safeCompensaciones.map((c) => (
               <tr key={c.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
-                <td className="px-4 py-3 font-medium">{c.empleado}</td>
+                <td className="px-4 py-3 font-medium">{c.empleadoNombre ?? c.empleadoId}</td>
                 <td className="px-4 py-3"><Badge variant="neutral">{tipoLabel[c.tipo]}</Badge></td>
-                <td className="px-4 py-3 text-[#7A7A7A]">{c.detalle}</td>
-                <td className={`px-4 py-3 font-semibold ${c.monto < 0 ? 'text-[#E42313]' : ''}`}>
-                  {c.monto < 0 ? '-' : ''}${Math.abs(c.monto).toLocaleString('es-AR')}
+                <td className="px-4 py-3 text-[#7A7A7A]">{c.descripcion ?? '—'}</td>
+                <td className={`px-4 py-3 font-semibold`}>
+                  ${Math.abs(c.monto).toLocaleString('es-AR')}
                 </td>
-                <td className="px-4 py-3 text-[#7A7A7A]">{c.periodo}</td>
+                <td className="px-4 py-3 text-[#7A7A7A]">{c.fecha}</td>
                 <td className="px-4 py-3">{estadoBadge(c.estado)}</td>
               </tr>
             ))}

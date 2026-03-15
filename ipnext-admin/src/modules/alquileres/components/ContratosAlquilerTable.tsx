@@ -35,11 +35,11 @@ export function ContratosAlquilerTable({ contratos }: { contratos: ContratoAlqui
           <tbody>
             {safeContratos.map((c) => (
               <tr key={c.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
-                <td className="px-4 py-3"><p className="font-medium">{c.inmueble}</p><p className="text-xs text-[#7A7A7A]">{c.direccion}</p></td>
+                <td className="px-4 py-3"><p className="font-medium">{c.inmuebleNombre ?? c.inmuebleId}</p><p className="text-xs text-[#7A7A7A]">{c.direccion}</p></td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{c.propietario}</td>
                 <td className="px-4 py-3 text-xs text-[#7A7A7A]">{c.vigenciaDesde} – {c.vigenciaHasta}</td>
-                <td className="px-4 py-3 text-[#7A7A7A]">{c.ajuste}</td>
-                <td className="px-4 py-3 font-semibold">${c.alquilerMensual.toLocaleString('es-AR')}</td>
+                <td className="px-4 py-3 text-[#7A7A7A]">{c.ajusteFrecuencia}</td>
+                <td className="px-4 py-3 font-semibold">${c.montoMensual.toLocaleString('es-AR')}</td>
                 <td className="px-4 py-3">{estadoBadge(c.estado)}</td>
               </tr>
             ))}

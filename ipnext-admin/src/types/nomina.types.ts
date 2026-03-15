@@ -4,31 +4,31 @@ export interface Empleado {
   puesto: string
   area: string
   rol: string
-  cargo: string
-  sueldoBase: number
+  sueldoBruto: number
   obraSocial: string
-  netoMes: number
+  fechaIngreso: string
+  avatar?: string
 }
 
 export interface Guardia {
   id: string
-  nombre: string
-  turno: string
-  hsTrabajadas: number
-  horasExtras: number
-  ausencias: number
-  estado: 'regular' | 'autorizado' | 'revisar'
+  empleadoId: string
+  empleadoNombre?: string
+  fecha: string
+  horas: number
+  monto: number
 }
 
-export type CompensacionTipo = 'vacaciones' | 'bono_productividad' | 'adelanto_sueldo'
-export type CompensacionEstado = 'aprobado' | 'pendiente' | 'en_cuotas'
+export type CompensacionTipo = 'bono' | 'adelanto' | 'extra' | 'otro'
+export type CompensacionEstado = 'aprobado' | 'pendiente' | 'rechazado'
 
 export interface Compensacion {
   id: string
-  empleado: string
+  empleadoId: string
+  empleadoNombre?: string
   tipo: CompensacionTipo
-  detalle: string
+  descripcion?: string
   monto: number
-  periodo: string
+  fecha: string
   estado: CompensacionEstado
 }

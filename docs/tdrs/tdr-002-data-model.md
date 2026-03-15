@@ -1,7 +1,7 @@
 # TDR-002: Modelo de Datos Principal
 
 ## Estado
-Propuesto
+Implementado — alineado con el backend (ver `administracion-backend/docs/tdrs/tdr-002-data-model.md`)
 
 ## Contexto
 Definir las entidades principales del sistema para orientar tanto el frontend (tipos TypeScript) como el futuro diseño del backend.
@@ -184,7 +184,14 @@ interface CuentaBancaria {
 }
 ```
 
+## Notas de implementación
+
+- Tipos viven en `src/types/*.types.ts` y son usados en servicios, hooks y componentes.
+- El backend retorna los datos envueltos en `{ "data": <payload> }` — el cliente Axios los desenvuelve automáticamente via interceptor (ver TDR-003).
+- Fechas en request body: `YYYY-MM-DD`. Fechas en response: RFC3339 (`2026-03-15T00:00:00Z`).
+- IDs son UUIDs (string). Montos son numbers (float).
+
 ## Consecuencias
 - Estos tipos deben vivir en `src/types/` y ser usados en hooks y services.
-- El backend debe respetar estas estructuras en sus respuestas JSON.
+- El backend respeta estas estructuras en sus respuestas JSON.
 - Los campos opcionales (`?`) pueden no existir en registros históricos.

@@ -10,7 +10,7 @@ Necesitamos definir el stack tecnológico del frontend de IPNEXT Admin antes de 
 
 | Categoría | Tecnología | Justificación |
 |-----------|-----------|---------------|
-| Framework | **React 18** | Ecosistema maduro, gran comunidad, componentes funcionales + hooks |
+| Framework | **React 19** | Ecosistema maduro, gran comunidad, componentes funcionales + hooks |
 | Build tool | **Vite** | Rápido en desarrollo y build, soporte nativo ESM |
 | Lenguaje | **TypeScript** | Tipado estático, mejor DX, obligatorio para un proyecto de esta complejidad |
 | Routing | **React Router v6** | Estándar de facto para SPAs en React |
@@ -23,6 +23,7 @@ Necesitamos definir el stack tecnológico del frontend de IPNEXT Admin antes de 
 | Formularios | **React Hook Form + Zod** | Performante, validación con schema, sin re-renders innecesarios |
 | Fechas | **date-fns** | Ligero, tree-shakeable, sin mutabilidad (vs moment.js) |
 | Linting | **ESLint + Prettier** | Consistencia de código |
+| Testing | **Vitest + jsdom + axios-mock-adapter** | Tests unitarios de servicios, store y tipos |
 
 ## Consecuencias
 - Positivo: stack moderno y bien documentado.
