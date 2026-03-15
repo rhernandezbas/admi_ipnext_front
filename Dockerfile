@@ -4,7 +4,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 COPY ipnext-admin/package.json ./
-RUN npm install --registry https://registry.npmjs.org
+RUN echo "registry=https://registry.npmjs.org" > .npmrc && npm install
 
 COPY ipnext-admin/ .
 RUN npm run build
