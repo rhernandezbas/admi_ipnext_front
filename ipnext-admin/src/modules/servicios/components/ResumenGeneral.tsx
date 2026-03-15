@@ -16,6 +16,7 @@ interface Props {
 }
 
 export function ResumenGeneral({ servicios, resumen }: Props) {
+  const safeServicios = Array.isArray(servicios) ? servicios : []
   const categorias = ['internet', 'energia', 'seguridad', 'software']
 
   return (
@@ -29,7 +30,7 @@ export function ResumenGeneral({ servicios, resumen }: Props) {
 
       <div className="grid grid-cols-2 gap-4">
         {categorias.map((cat) => {
-          const items = servicios.filter((s) => s.categoria === cat)
+          const items = safeServicios.filter((s) => s.categoria === cat)
           const total = items.reduce((a, s) => a + s.montoMensual, 0)
           return (
             <div key={cat} className="border border-[#E8E8E8] rounded-xl p-4">

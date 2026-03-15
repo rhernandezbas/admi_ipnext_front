@@ -10,9 +10,10 @@ function estadoBadge(estado: VencimientoAlquiler['estado']) {
 }
 
 export function VencimientosTable({ vencimientos }: { vencimientos: VencimientoAlquiler[] }) {
-  const en30 = vencimientos.filter((v) => v.diasRestantes >= 0 && v.diasRestantes <= 30).length
-  const en60 = vencimientos.filter((v) => v.diasRestantes >= 0 && v.diasRestantes <= 60).length
-  const vencidos = vencimientos.filter((v) => v.diasRestantes < 0).length
+  const safeVencimientos = Array.isArray(vencimientos) ? vencimientos : []
+  const en30 = safeVencimientos.filter((v) => v.diasRestantes >= 0 && v.diasRestantes <= 30).length
+  const en60 = safeVencimientos.filter((v) => v.diasRestantes >= 0 && v.diasRestantes <= 60).length
+  const vencidos = safeVencimientos.filter((v) => v.diasRestantes < 0).length
 
   return (
     <div>
@@ -33,7 +34,7 @@ export function VencimientosTable({ vencimientos }: { vencimientos: VencimientoA
             </tr>
           </thead>
           <tbody>
-            {vencimientos.map((v) => (
+            {safeVencimientos.map((v) => (
               <tr key={v.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
                 <td className="px-4 py-3 font-medium">{v.inmueble}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{v.propietario}</td>

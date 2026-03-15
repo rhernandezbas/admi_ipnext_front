@@ -13,6 +13,7 @@ function estadoBadge(estado: ContratoEstado) {
 }
 
 export function ContratosTable({ contratos }: { contratos: Contrato[] }) {
+  const safeContratos = Array.isArray(contratos) ? contratos : []
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
@@ -24,7 +25,7 @@ export function ContratosTable({ contratos }: { contratos: Contrato[] }) {
           </tr>
         </thead>
         <tbody>
-          {contratos.map((c) => (
+          {safeContratos.map((c) => (
             <tr key={c.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
               <td className="px-4 py-3 font-mono text-xs font-medium">{c.codigo}</td>
               <td className="px-4 py-3 font-medium">{c.proveedor}</td>

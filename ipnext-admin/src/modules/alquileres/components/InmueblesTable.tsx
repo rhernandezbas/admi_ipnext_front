@@ -10,14 +10,15 @@ function estadoBadge(estado: AlquilerEstado) {
 }
 
 export function InmueblesTable({ inmuebles }: { inmuebles: Inmueble[] }) {
-  const pagados = inmuebles.filter((i) => i.estado === 'pagado').length
-  const pendientes = inmuebles.filter((i) => i.estado !== 'pagado').length
+  const safeInmuebles = Array.isArray(inmuebles) ? inmuebles : []
+  const pagados = safeInmuebles.filter((i) => i.estado === 'pagado').length
+  const pendientes = safeInmuebles.filter((i) => i.estado !== 'pagado').length
 
   return (
     <div>
       <div className="grid grid-cols-4 gap-4 mb-6">
-        <KpiCard icon={<Home size={20} className="text-[#E42313]" />} label="Total inmuebles" value={String(inmuebles.length)} iconBg="bg-red-50" />
-        <KpiCard icon={<CheckCircle size={20} className="text-green-600" />} label="Pagos al corriente" value={`${pagados} / ${inmuebles.length}`} iconBg="bg-green-50" />
+        <KpiCard icon={<Home size={20} className="text-[#E42313]" />} label="Total inmuebles" value={String(safeInmuebles.length)} iconBg="bg-red-50" />
+        <KpiCard icon={<CheckCircle size={20} className="text-green-600" />} label="Pagos al corriente" value={`${pagados} / ${safeInmuebles.length}`} iconBg="bg-green-50" />
         <KpiCard icon={<Clock size={20} className="text-yellow-600" />} label="Pendientes / Vencidos" value={String(pendientes)} iconBg="bg-yellow-50" />
         <KpiCard icon={<Calendar size={20} className="text-blue-600" />} label="Próximo vencimiento" value="01 Mar" iconBg="bg-blue-50" />
       </div>
@@ -31,7 +32,7 @@ export function InmueblesTable({ inmuebles }: { inmuebles: Inmueble[] }) {
             </tr>
           </thead>
           <tbody>
-            {inmuebles.map((i) => (
+            {safeInmuebles.map((i) => (
               <tr key={i.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
                 <td className="px-4 py-3"><p className="font-medium">{i.nombre}</p><p className="text-xs text-[#7A7A7A]">{i.direccion}</p></td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{i.propietario}</td>

@@ -10,15 +10,16 @@ function estadoBadge(estado: ConciliacionEstado) {
 }
 
 export function ConciliacionTable({ movimientos }: { movimientos: MovimientoConciliacion[] }) {
-  const conciliados = movimientos.filter((m) => m.estado === 'conciliado').length
-  const pendientes = movimientos.filter((m) => m.estado === 'pendiente').length
-  const diferencias = movimientos.filter((m) => m.estado === 'observado').reduce((a, m) => a + (m.debito ?? m.credito ?? 0), 0)
+  const safeMovimientos = Array.isArray(movimientos) ? movimientos : []
+  const conciliados = safeMovimientos.filter((m) => m.estado === 'conciliado').length
+  const pendientes = safeMovimientos.filter((m) => m.estado === 'pendiente').length
+  const diferencias = safeMovimientos.filter((m) => m.estado === 'observado').reduce((a, m) => a + (m.debito ?? m.credito ?? 0), 0)
 
   return (
     <div>
       <p className="text-sm text-[#7A7A7A] mb-4">Revisión de movimientos — Marzo 2026</p>
       <div className="grid grid-cols-4 gap-4 mb-6">
-        <KpiCard icon={<ListChecks size={20} className="text-[#E42313]" />} label="Movimientos totales" value={String(movimientos.length)} iconBg="bg-red-50" />
+        <KpiCard icon={<ListChecks size={20} className="text-[#E42313]" />} label="Movimientos totales" value={String(safeMovimientos.length)} iconBg="bg-red-50" />
         <KpiCard icon={<CheckCircle size={20} className="text-green-600" />} label="Conciliados" value={String(conciliados)} iconBg="bg-green-50" />
         <KpiCard icon={<Clock size={20} className="text-yellow-600" />} label="Pendientes" value={String(pendientes)} iconBg="bg-yellow-50" />
         <KpiCard icon={<AlertTriangle size={20} className="text-red-600" />} label="Diferencias" value={`$${diferencias.toLocaleString('es-AR')}`} iconBg="bg-red-50" />
@@ -33,7 +34,7 @@ export function ConciliacionTable({ movimientos }: { movimientos: MovimientoConc
             </tr>
           </thead>
           <tbody>
-            {movimientos.map((m) => (
+            {safeMovimientos.map((m) => (
               <tr key={m.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
                 <td className="px-4 py-3 font-medium">{m.descripcion}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{m.cuenta}</td>

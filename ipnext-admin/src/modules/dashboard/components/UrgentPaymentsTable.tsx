@@ -9,6 +9,7 @@ function statusBadge(status: UrgentPayment['status']) {
 }
 
 export function UrgentPaymentsTable({ payments }: { payments: UrgentPayment[] }) {
+  const safePayments = Array.isArray(payments) ? payments : []
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
@@ -20,7 +21,7 @@ export function UrgentPaymentsTable({ payments }: { payments: UrgentPayment[] })
           </tr>
         </thead>
         <tbody>
-          {payments.map((p) => (
+          {safePayments.map((p) => (
             <tr key={p.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA] transition-colors">
               <td className="px-4 py-3 font-medium">{p.beneficiary}</td>
               <td className="px-4 py-3 text-[#7A7A7A]">{p.category}</td>

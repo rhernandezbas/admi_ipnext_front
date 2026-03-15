@@ -16,9 +16,10 @@ function estadoBadge(estado: CompensacionEstado) {
 }
 
 export function CompensacionesTable({ compensaciones }: { compensaciones: Compensacion[] }) {
-  const totalMonto = compensaciones.reduce((a, c) => a + Math.abs(c.monto), 0)
-  const adelantos = compensaciones.filter((c) => c.tipo === 'adelanto_sueldo').reduce((a, c) => a + Math.abs(c.monto), 0)
-  const pendientes = compensaciones.filter((c) => c.estado === 'pendiente').length
+  const safeCompensaciones = Array.isArray(compensaciones) ? compensaciones : []
+  const totalMonto = safeCompensaciones.reduce((a, c) => a + Math.abs(c.monto), 0)
+  const adelantos = safeCompensaciones.filter((c) => c.tipo === 'adelanto_sueldo').reduce((a, c) => a + Math.abs(c.monto), 0)
+  const pendientes = safeCompensaciones.filter((c) => c.estado === 'pendiente').length
 
   return (
     <div>
@@ -26,7 +27,7 @@ export function CompensacionesTable({ compensaciones }: { compensaciones: Compen
         <KpiCard icon={<CalendarClock size={20} className="text-yellow-600" />} label="Próx. vencimientos" value="5 días" iconBg="bg-yellow-50" />
         <KpiCard icon={<DollarSign size={20} className="text-[#E42313]" />} label="Monto total" value={`$${totalMonto.toLocaleString('es-AR')}`} iconBg="bg-red-50" />
         <KpiCard icon={<CreditCard size={20} className="text-blue-600" />} label="Adelantos activos" value={`$${adelantos.toLocaleString('es-AR')}`} iconBg="bg-blue-50" />
-        <KpiCard icon={<ListOrdered size={20} className="text-green-600" />} label="Pagos restantes" value={`${pendientes} / ${compensaciones.length}`} iconBg="bg-green-50" />
+        <KpiCard icon={<ListOrdered size={20} className="text-green-600" />} label="Pagos restantes" value={`${pendientes} / ${safeCompensaciones.length}`} iconBg="bg-green-50" />
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
@@ -38,7 +39,7 @@ export function CompensacionesTable({ compensaciones }: { compensaciones: Compen
             </tr>
           </thead>
           <tbody>
-            {compensaciones.map((c) => (
+            {safeCompensaciones.map((c) => (
               <tr key={c.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
                 <td className="px-4 py-3 font-medium">{c.empleado}</td>
                 <td className="px-4 py-3"><Badge variant="neutral">{tipoLabel[c.tipo]}</Badge></td>

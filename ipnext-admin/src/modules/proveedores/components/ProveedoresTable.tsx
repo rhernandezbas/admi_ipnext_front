@@ -11,8 +11,9 @@ interface Props {
 
 export function ProveedoresTable({ proveedores, selectedId, onSelect }: Props) {
   const [busqueda, setBusqueda] = useState('')
+  const safeProveedores = Array.isArray(proveedores) ? proveedores : []
 
-  const filtrados = proveedores.filter((p) =>
+  const filtrados = safeProveedores.filter((p) =>
     !busqueda || p.nombre.toLowerCase().includes(busqueda.toLowerCase()) || p.cuit.includes(busqueda)
   )
 

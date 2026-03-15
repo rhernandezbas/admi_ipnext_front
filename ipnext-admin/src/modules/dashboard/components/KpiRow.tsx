@@ -10,9 +10,10 @@ const icons = [
 ]
 
 export function KpiRow({ kpis }: { kpis: Kpi[] }) {
+  const safeKpis = Array.isArray(kpis) ? kpis : []
   return (
     <div className="grid grid-cols-4 gap-4">
-      {kpis.map((kpi, i) => (
+      {safeKpis.map((kpi, i) => (
         <KpiCard
           key={kpi.id}
           icon={icons[i]}

@@ -55,8 +55,9 @@ export function TransferenciasTable({ data }: Props) {
   const [categoria, setCategoria] = useState('')
   const [estado, setEstado] = useState('')
   const [tipo, setTipo] = useState('')
+  const safeData = Array.isArray(data) ? data : []
 
-  const filtrado = data.filter((t) => {
+  const filtrado = safeData.filter((t) => {
     if (busqueda && !t.beneficiario.toLowerCase().includes(busqueda.toLowerCase())) return false
     if (categoria && t.categoria !== categoria) return false
     if (estado && t.estado !== estado) return false

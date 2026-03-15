@@ -8,16 +8,17 @@ interface Props {
 }
 
 export function RankingChart({ ranking }: Props) {
-  const totalAcumulado = ranking.reduce((a, r) => a + r.totalPagado, 0)
-  const mayorProveedor = ranking[0]?.proveedor ?? '—'
+  const safeRanking = Array.isArray(ranking) ? ranking : []
+  const totalAcumulado = safeRanking.reduce((a, r) => a + r.totalPagado, 0)
+  const mayorProveedor = safeRanking[0]?.proveedor ?? '—'
 
-  const chartData = ranking.map((r) => ({ name: r.proveedor.split(' ')[0], total: r.totalPagado }))
+  const chartData = safeRanking.map((r) => ({ name: r.proveedor.split(' ')[0], total: r.totalPagado }))
 
   return (
     <div>
       <div className="grid grid-cols-3 gap-4 mb-6">
         <KpiCard icon={<DollarSign size={20} className="text-[#E42313]" />} label="Total acumulado" value={`$${(totalAcumulado / 1000000).toFixed(1)}M`} iconBg="bg-red-50" />
-        <KpiCard icon={<Building2 size={20} className="text-blue-600" />} label="Proveedores activos" value={String(ranking.length)} iconBg="bg-blue-50" />
+        <KpiCard icon={<Building2 size={20} className="text-blue-600" />} label="Proveedores activos" value={String(safeRanking.length)} iconBg="bg-blue-50" />
         <KpiCard icon={<Trophy size={20} className="text-yellow-600" />} label="Mayor proveedor" value={mayorProveedor.split(' ')[0]} iconBg="bg-yellow-50" />
       </div>
 
@@ -43,7 +44,7 @@ export function RankingChart({ ranking }: Props) {
               </tr>
             </thead>
             <tbody>
-              {ranking.map((r) => (
+              {safeRanking.map((r) => (
                 <tr key={r.pos} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
                   <td className="px-3 py-2 font-bold text-[#E42313]">{r.pos}</td>
                   <td className="px-3 py-2 font-medium text-xs">{r.proveedor}</td>

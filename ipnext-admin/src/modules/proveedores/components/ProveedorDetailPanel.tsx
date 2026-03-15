@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function ProveedorDetailPanel({ proveedor, onClose }: Props) {
-  const pagos = proveedor.historialPagos
+  const pagos = Array.isArray(proveedor.historialPagos) ? proveedor.historialPagos : []
   const promedio = pagos.length ? Math.round(pagos.reduce((a, p) => a + p.monto, 0) / pagos.length) : 0
   const maxPago = pagos.length ? Math.max(...pagos.map((p) => p.monto)) : 0
   const minPago = pagos.length ? Math.min(...pagos.map((p) => p.monto)) : 0

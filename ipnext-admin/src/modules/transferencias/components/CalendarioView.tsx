@@ -17,6 +17,7 @@ interface Props {
 }
 
 export function CalendarioView({ dias }: Props) {
+  const safeDias = Array.isArray(dias) ? dias : []
   const [currentDate, setCurrentDate] = useState(new Date(2026, 2, 1))
 
   const monthStart = startOfMonth(currentDate)
@@ -25,7 +26,7 @@ export function CalendarioView({ dias }: Props) {
 
   const startPad = getDay(monthStart) === 0 ? 6 : getDay(monthStart) - 1
 
-  const diasMap = new Map(dias.map((d) => [d.fecha, d]))
+  const diasMap = new Map(safeDias.map((d) => [d.fecha, d]))
 
   const prevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))
   const nextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))

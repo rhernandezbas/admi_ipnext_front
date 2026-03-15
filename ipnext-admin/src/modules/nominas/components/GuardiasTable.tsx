@@ -10,14 +10,15 @@ function estadoBadge(estado: Guardia['estado']) {
 }
 
 export function GuardiasTable({ guardias }: { guardias: Guardia[] }) {
-  const totalHoras = guardias.reduce((a, g) => a + g.hsTrabajadas, 0)
-  const totalExtras = guardias.reduce((a, g) => a + g.horasExtras, 0)
-  const totalAusencias = guardias.reduce((a, g) => a + g.ausencias, 0)
+  const safeGuardias = Array.isArray(guardias) ? guardias : []
+  const totalHoras = safeGuardias.reduce((a, g) => a + g.hsTrabajadas, 0)
+  const totalExtras = safeGuardias.reduce((a, g) => a + g.horasExtras, 0)
+  const totalAusencias = safeGuardias.reduce((a, g) => a + g.ausencias, 0)
 
   return (
     <div>
       <div className="grid grid-cols-4 gap-4 mb-6">
-        <KpiCard icon={<Shield size={20} className="text-[#E42313]" />} label="Guardias activas" value={String(guardias.length)} iconBg="bg-red-50" />
+        <KpiCard icon={<Shield size={20} className="text-[#E42313]" />} label="Guardias activas" value={String(safeGuardias.length)} iconBg="bg-red-50" />
         <KpiCard icon={<Clock size={20} className="text-blue-600" />} label="Horas primas mensuales" value={String(totalHoras)} iconBg="bg-blue-50" />
         <KpiCard icon={<DollarSign size={20} className="text-[#E42313]" />} label="Costo total guardias" value={`$${(totalExtras * 2500).toLocaleString('es-AR')}`} iconBg="bg-red-50" />
         <KpiCard icon={<UserX size={20} className="text-yellow-600" />} label="Ausencias pagadas" value={String(totalAusencias)} iconBg="bg-yellow-50" />
@@ -32,7 +33,7 @@ export function GuardiasTable({ guardias }: { guardias: Guardia[] }) {
             </tr>
           </thead>
           <tbody>
-            {guardias.map((g) => (
+            {safeGuardias.map((g) => (
               <tr key={g.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
                 <td className="px-4 py-3 font-medium">{g.nombre}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{g.turno}</td>

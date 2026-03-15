@@ -10,9 +10,10 @@ function estadoBadge(estado: ContratoAlquilerEstado) {
 }
 
 export function ContratosAlquilerTable({ contratos }: { contratos: ContratoAlquiler[] }) {
-  const activos = contratos.filter((c) => c.estado === 'vigente').length
-  const porRenovar = contratos.filter((c) => c.estado === 'por_vencer').length
-  const vencidos = contratos.filter((c) => c.estado === 'vencido').length
+  const safeContratos = Array.isArray(contratos) ? contratos : []
+  const activos = safeContratos.filter((c) => c.estado === 'vigente').length
+  const porRenovar = safeContratos.filter((c) => c.estado === 'por_vencer').length
+  const vencidos = safeContratos.filter((c) => c.estado === 'vencido').length
 
   return (
     <div>
@@ -32,7 +33,7 @@ export function ContratosAlquilerTable({ contratos }: { contratos: ContratoAlqui
             </tr>
           </thead>
           <tbody>
-            {contratos.map((c) => (
+            {safeContratos.map((c) => (
               <tr key={c.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
                 <td className="px-4 py-3"><p className="font-medium">{c.inmueble}</p><p className="text-xs text-[#7A7A7A]">{c.direccion}</p></td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{c.propietario}</td>

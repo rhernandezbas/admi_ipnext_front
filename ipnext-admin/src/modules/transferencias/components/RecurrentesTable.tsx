@@ -20,7 +20,8 @@ interface Props {
 }
 
 export function RecurrentesTable({ data }: Props) {
-  const recurrentes = data.filter((t) => t.tipo === 'recurrente' || t.tipo === 'automatico')
+  const safeData = Array.isArray(data) ? data : []
+  const recurrentes = safeData.filter((t) => t.tipo === 'recurrente' || t.tipo === 'automatico')
 
   return (
     <div className="overflow-x-auto">

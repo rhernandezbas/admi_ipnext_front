@@ -9,9 +9,10 @@ const iconMap = {
 }
 
 export function ActivityFeed({ items }: { items: ActivityItem[] }) {
+  const safeItems = Array.isArray(items) ? items : []
   return (
     <div className="flex flex-col gap-4">
-      {items.map((item) => (
+      {safeItems.map((item) => (
         <div key={item.id} className="flex items-start gap-3">
           <div className="w-8 h-8 rounded-full bg-[#FAFAFA] border border-[#E8E8E8] flex items-center justify-center flex-shrink-0">
             {iconMap[item.type]}

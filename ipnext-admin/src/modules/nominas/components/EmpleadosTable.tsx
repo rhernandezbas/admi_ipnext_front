@@ -17,10 +17,11 @@ interface Props {
 }
 
 export function EmpleadosTable({ empleados, resumen }: Props) {
+  const safeEmpleados = Array.isArray(empleados) ? empleados : []
   return (
     <div>
       <div className="grid grid-cols-4 gap-4 mb-6">
-        <KpiCard icon={<Users size={20} className="text-[#E42313]" />} label="Empleados activos" value={String(empleados.length)} iconBg="bg-red-50" />
+        <KpiCard icon={<Users size={20} className="text-[#E42313]" />} label="Empleados activos" value={String(safeEmpleados.length)} iconBg="bg-red-50" />
         <KpiCard icon={<DollarSign size={20} className="text-blue-600" />} label="Nómina bruta" value={`$${(resumen.totalBruto / 1000).toFixed(0)}K`} iconBg="bg-blue-50" />
         <KpiCard icon={<TrendingUp size={20} className="text-green-600" />} label="Con aumento" value={String(resumen.empleadosConAumento)} iconBg="bg-green-50" />
         <KpiCard icon={<Clock size={20} className="text-yellow-600" />} label="Liq. pendientes" value={String(resumen.liquidacionesPendientes)} iconBg="bg-yellow-50" />
@@ -36,7 +37,7 @@ export function EmpleadosTable({ empleados, resumen }: Props) {
               </tr>
             </thead>
             <tbody>
-              {empleados.map((e) => (
+              {safeEmpleados.map((e) => (
                 <tr key={e.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
                   <td className="px-4 py-3 flex items-center gap-3">
                     <Avatar name={e.nombre} size="sm" />

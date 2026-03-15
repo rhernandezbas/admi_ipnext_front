@@ -4,15 +4,16 @@ import { DollarSign, ReceiptText, Clock, Calendar } from 'lucide-react'
 import type { PagoAlquiler } from '@/types/alquiler.types'
 
 export function PagosRecibosTable({ pagos }: { pagos: PagoAlquiler[] }) {
-  const totalAcumulado = pagos.filter((p) => p.estado === 'pagado').reduce((a, p) => a + p.monto, 0)
-  const pendientes = pagos.filter((p) => p.estado === 'pendiente').length
-  const ultimoPago = pagos.filter((p) => p.fechaPago).sort((a, b) => b.fechaPago.localeCompare(a.fechaPago))[0]
+  const safePagos = Array.isArray(pagos) ? pagos : []
+  const totalAcumulado = safePagos.filter((p) => p.estado === 'pagado').reduce((a, p) => a + p.monto, 0)
+  const pendientes = safePagos.filter((p) => p.estado === 'pendiente').length
+  const ultimoPago = safePagos.filter((p) => p.fechaPago).sort((a, b) => b.fechaPago.localeCompare(a.fechaPago))[0]
 
   return (
     <div>
       <p className="text-sm text-[#7A7A7A] mb-4">Registro de pagos de inmuebles — Marzo 2026</p>
       <div className="grid grid-cols-4 gap-4 mb-6">
-        <KpiCard icon={<DollarSign size={20} className="text-[#E42313]" />} label="Pagos este mes" value={String(pagos.filter((p) => p.estado === 'pagado').length)} iconBg="bg-red-50" />
+        <KpiCard icon={<DollarSign size={20} className="text-[#E42313]" />} label="Pagos este mes" value={String(safePagos.filter((p) => p.estado === 'pagado').length)} iconBg="bg-red-50" />
         <KpiCard icon={<ReceiptText size={20} className="text-green-600" />} label="Total acumulado" value={`$${totalAcumulado.toLocaleString('es-AR')}`} iconBg="bg-green-50" />
         <KpiCard icon={<Clock size={20} className="text-yellow-600" />} label="Recibos pendientes" value={String(pendientes)} iconBg="bg-yellow-50" />
         <KpiCard icon={<Calendar size={20} className="text-blue-600" />} label="Último pago" value={ultimoPago?.fechaPago ?? '—'} iconBg="bg-blue-50" />
@@ -27,7 +28,7 @@ export function PagosRecibosTable({ pagos }: { pagos: PagoAlquiler[] }) {
             </tr>
           </thead>
           <tbody>
-            {pagos.map((p) => (
+            {safePagos.map((p) => (
               <tr key={p.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
                 <td className="px-4 py-3 font-medium">{p.inmueble}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{p.periodo}</td>
