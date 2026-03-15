@@ -12,14 +12,18 @@ export default function LoginPage() {
   const { login } = useAuthStore()
   const navigate = useNavigate()
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    e.stopPropagation()
     setLoading(true)
     setError('')
-    const ok = await login(email, password)
-    setLoading(false)
-    if (ok) navigate('/')
-    else setError('Credenciales inválidas')
+    login(email, password)
+      .then((ok) => {
+        if (ok) navigate('/', { replace: true })
+        else setError('Credenciales inválidas')
+      })
+      .catch(() => setError('Error de conexión'))
+      .finally(() => setLoading(false))
   }
 
   return (
