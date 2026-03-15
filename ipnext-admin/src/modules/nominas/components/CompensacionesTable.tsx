@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/Badge'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { CalendarClock, DollarSign, CreditCard, ListOrdered } from 'lucide-react'
 import type { Compensacion, CompensacionTipo, CompensacionEstado } from '@/types/nomina.types'
+import { formatARS } from '@/lib/formatters'
 
 const tipoLabel: Record<CompensacionTipo, string> = {
   bono: 'Bono',
@@ -26,8 +27,8 @@ export function CompensacionesTable({ compensaciones }: { compensaciones: Compen
     <div>
       <div className="grid grid-cols-4 gap-4 mb-6">
         <KpiCard icon={<CalendarClock size={20} className="text-yellow-600" />} label="Próx. vencimientos" value="5 días" iconBg="bg-yellow-50" />
-        <KpiCard icon={<DollarSign size={20} className="text-[#E42313]" />} label="Monto total" value={`$${totalMonto.toLocaleString('es-AR')}`} iconBg="bg-red-50" />
-        <KpiCard icon={<CreditCard size={20} className="text-blue-600" />} label="Adelantos activos" value={`$${adelantos.toLocaleString('es-AR')}`} iconBg="bg-blue-50" />
+        <KpiCard icon={<DollarSign size={20} className="text-[#E42313]" />} label="Monto total" value={`$${formatARS(totalMonto)}`} iconBg="bg-red-50" />
+        <KpiCard icon={<CreditCard size={20} className="text-blue-600" />} label="Adelantos activos" value={`$${formatARS(adelantos)}`} iconBg="bg-blue-50" />
         <KpiCard icon={<ListOrdered size={20} className="text-green-600" />} label="Pagos restantes" value={`${pendientes} / ${safeCompensaciones.length}`} iconBg="bg-green-50" />
       </div>
       <div className="overflow-x-auto">
@@ -46,7 +47,7 @@ export function CompensacionesTable({ compensaciones }: { compensaciones: Compen
                 <td className="px-4 py-3"><Badge variant="neutral">{tipoLabel[c.tipo]}</Badge></td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{c.descripcion ?? '—'}</td>
                 <td className={`px-4 py-3 font-semibold`}>
-                  ${Math.abs(c.monto).toLocaleString('es-AR')}
+                  ${formatARS(Math.abs(c.monto ?? 0))}
                 </td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{c.fecha}</td>
                 <td className="px-4 py-3">{estadoBadge(c.estado)}</td>

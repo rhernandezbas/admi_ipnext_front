@@ -2,6 +2,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { KpiCard } from '@/components/ui/KpiCard'
 import { DollarSign, Building2, Trophy } from 'lucide-react'
 import type { RankingItem } from '@/types/proveedor.types'
+import { formatARS, formatMiles, formatMillones } from '@/lib/formatters'
 
 interface Props {
   ranking: RankingItem[]
@@ -17,7 +18,7 @@ export function RankingChart({ ranking }: Props) {
   return (
     <div>
       <div className="grid grid-cols-3 gap-4 mb-6">
-        <KpiCard icon={<DollarSign size={20} className="text-[#E42313]" />} label="Total acumulado" value={`$${(totalAcumulado / 1000000).toFixed(1)}M`} iconBg="bg-red-50" />
+        <KpiCard icon={<DollarSign size={20} className="text-[#E42313]" />} label="Total acumulado" value={`$${formatMillones(totalAcumulado)}`} iconBg="bg-red-50" />
         <KpiCard icon={<Building2 size={20} className="text-blue-600" />} label="Proveedores activos" value={String(safeRanking.length)} iconBg="bg-blue-50" />
         <KpiCard icon={<Trophy size={20} className="text-yellow-600" />} label="Mayor proveedor" value={mayorProveedor.split(' ')[0]} iconBg="bg-yellow-50" />
       </div>
@@ -27,7 +28,7 @@ export function RankingChart({ ranking }: Props) {
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={chartData} layout="vertical" margin={{ left: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#E8E8E8" horizontal={false} />
-              <XAxis type="number" tick={{ fontSize: 11, fill: '#7A7A7A' }} tickFormatter={(v: number) => `$${(v / 1000).toFixed(0)}K`} />
+              <XAxis type="number" tick={{ fontSize: 11, fill: '#7A7A7A' }} tickFormatter={(v: number) => `$${formatMiles(v)}`} />
               <YAxis type="category" dataKey="name" tick={{ fontSize: 12, fill: '#7A7A7A' }} width={80} />
               <Tooltip formatter={(v) => [`$${Number(v ?? 0).toLocaleString('es-AR')}`, 'Total']} />
               <Bar dataKey="total" fill="#E42313" radius={[0, 4, 4, 0]} />
@@ -49,7 +50,7 @@ export function RankingChart({ ranking }: Props) {
                   <td className="px-3 py-2 font-bold text-[#E42313]">{r.pos}</td>
                   <td className="px-3 py-2 font-medium text-xs">{r.proveedor}</td>
                   <td className="px-3 py-2 text-[#7A7A7A] text-xs">{r.categoria}</td>
-                  <td className="px-3 py-2 font-semibold text-xs">${r.totalPagado.toLocaleString('es-AR')}</td>
+                  <td className="px-3 py-2 font-semibold text-xs">${formatARS(r.totalPagado)}</td>
                   <td className="px-3 py-2 text-[#7A7A7A] text-xs">{r.ultimoPago}</td>
                   <td className="px-3 py-2 text-center">{r.facturas}</td>
                 </tr>

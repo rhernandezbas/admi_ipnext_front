@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/Badge'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { ListChecks, CheckCircle, Clock, AlertTriangle } from 'lucide-react'
 import type { MovimientoConciliacion, ConciliacionEstado } from '@/types/tesoreria.types'
+import { formatARS } from '@/lib/formatters'
 
 function estadoBadge(estado: ConciliacionEstado) {
   if (estado === 'conciliado') return <Badge variant="success">Conciliado</Badge>
@@ -22,7 +23,7 @@ export function ConciliacionTable({ movimientos }: { movimientos: MovimientoConc
         <KpiCard icon={<ListChecks size={20} className="text-[#E42313]" />} label="Movimientos totales" value={String(safeMovimientos.length)} iconBg="bg-red-50" />
         <KpiCard icon={<CheckCircle size={20} className="text-green-600" />} label="Conciliados" value={String(conciliados)} iconBg="bg-green-50" />
         <KpiCard icon={<Clock size={20} className="text-yellow-600" />} label="Pendientes" value={String(pendientes)} iconBg="bg-yellow-50" />
-        <KpiCard icon={<AlertTriangle size={20} className="text-red-600" />} label="Diferencias" value={`$${diferencias.toLocaleString('es-AR')}`} iconBg="bg-red-50" />
+        <KpiCard icon={<AlertTriangle size={20} className="text-red-600" />} label="Diferencias" value={`$${formatARS(diferencias)}`} iconBg="bg-red-50" />
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
@@ -39,8 +40,8 @@ export function ConciliacionTable({ movimientos }: { movimientos: MovimientoConc
                 <td className="px-4 py-3 font-medium">{m.descripcion}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{m.cuenta}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{m.fecha}</td>
-                <td className="px-4 py-3 text-[#E42313] font-medium">{m.debito ? `$${m.debito.toLocaleString('es-AR')}` : '—'}</td>
-                <td className="px-4 py-3 text-[#22C55E] font-medium">{m.credito ? `$${m.credito.toLocaleString('es-AR')}` : '—'}</td>
+                <td className="px-4 py-3 text-[#E42313] font-medium">{m.debito != null ? `$${formatARS(m.debito)}` : '—'}</td>
+                <td className="px-4 py-3 text-[#22C55E] font-medium">{m.credito != null ? `$${formatARS(m.credito)}` : '—'}</td>
                 <td className="px-4 py-3">{estadoBadge(m.estado)}</td>
               </tr>
             ))}

@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/Badge'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { DollarSign, ReceiptText, Clock, Calendar } from 'lucide-react'
 import type { PagoAlquiler } from '@/types/alquiler.types'
+import { formatARS } from '@/lib/formatters'
 
 export function PagosRecibosTable({ pagos }: { pagos: PagoAlquiler[] }) {
   const safePagos = Array.isArray(pagos) ? pagos : []
@@ -14,7 +15,7 @@ export function PagosRecibosTable({ pagos }: { pagos: PagoAlquiler[] }) {
       <p className="text-sm text-[#7A7A7A] mb-4">Registro de pagos de inmuebles — Marzo 2026</p>
       <div className="grid grid-cols-4 gap-4 mb-6">
         <KpiCard icon={<DollarSign size={20} className="text-[#E42313]" />} label="Pagos este mes" value={String(safePagos.filter((p) => p.estado === 'pagado').length)} iconBg="bg-red-50" />
-        <KpiCard icon={<ReceiptText size={20} className="text-green-600" />} label="Total acumulado" value={`$${totalAcumulado.toLocaleString('es-AR')}`} iconBg="bg-green-50" />
+        <KpiCard icon={<ReceiptText size={20} className="text-green-600" />} label="Total acumulado" value={`$${formatARS(totalAcumulado)}`} iconBg="bg-green-50" />
         <KpiCard icon={<Clock size={20} className="text-yellow-600" />} label="Recibos pendientes" value={String(pendientes)} iconBg="bg-yellow-50" />
         <KpiCard icon={<Calendar size={20} className="text-blue-600" />} label="Último pago" value={ultimoPago?.fechaPago ?? '—'} iconBg="bg-blue-50" />
       </div>
@@ -33,7 +34,7 @@ export function PagosRecibosTable({ pagos }: { pagos: PagoAlquiler[] }) {
                 <td className="px-4 py-3 font-medium">{p.inmuebleNombre ?? p.inmuebleId}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{p.periodo}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{p.fechaPago || '—'}</td>
-                <td className="px-4 py-3 font-semibold">${p.monto.toLocaleString('es-AR')}</td>
+                <td className="px-4 py-3 font-semibold">${formatARS(p.monto)}</td>
                 <td className="px-4 py-3 font-mono text-xs text-[#7A7A7A]">{p.nroRecibo ?? '—'}</td>
                 <td className="px-4 py-3">{p.estado === 'pagado' ? <Badge variant="success">Pagado</Badge> : <Badge variant="warning">Pendiente</Badge>}</td>
               </tr>

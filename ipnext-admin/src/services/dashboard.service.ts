@@ -1,12 +1,13 @@
 import { api } from '@/lib/api'
 import type { Kpi, KpisBackend, PagoUrgente, DistribucionEgreso, ActividadItem } from '@/types/dashboard.types'
+import { formatARS } from '@/lib/formatters'
 
 function transformKpis(raw: KpisBackend): Kpi[] {
   return [
     {
       id: 'total-pagos-mes',
       label: 'Total Pagos Mes',
-      value: `$${raw.totalPagosMes.toLocaleString('es-AR')}`,
+      value: `$${formatARS(raw.totalPagosMes)}`,
       iconBg: 'bg-red-50',
     },
     {
@@ -18,13 +19,13 @@ function transformKpis(raw: KpisBackend): Kpi[] {
     {
       id: 'flujo-caja',
       label: 'Flujo de Caja',
-      value: `$${raw.flujoCajaMes.toLocaleString('es-AR')}`,
+      value: `$${formatARS(raw.flujoCajaMes)}`,
       iconBg: 'bg-blue-50',
     },
     {
       id: 'costo-nomina',
       label: 'Costo Nómina',
-      value: `$${raw.costoNominaMes.toLocaleString('es-AR')}`,
+      value: `$${formatARS(raw.costoNominaMes)}`,
       subtitle: `${raw.totalEmpleados} empleados`,
       iconBg: 'bg-green-50',
     },

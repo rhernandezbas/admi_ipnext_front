@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/Badge'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { Wallet, TrendingUp, Clock, AlertCircle } from 'lucide-react'
 import type { FlujoCaja, CuentaBancaria } from '@/types/tesoreria.types'
+import { formatARS, formatMillones } from '@/lib/formatters'
 
 function tipoBadge(tipo: FlujoCaja['tipo']) {
   const map = { nomina: 'info', alquileres: 'warning', transferencias: 'neutral', otro: 'neutral' } as const
@@ -23,7 +24,7 @@ export function FlujoCajaTable({ flujo, cuentas }: Props) {
     <div>
       <p className="text-sm text-[#7A7A7A] mb-4">Posición financiera — Marzo 2026</p>
       <div className="grid grid-cols-4 gap-4 mb-6">
-        <KpiCard icon={<Wallet size={20} className="text-[#E42313]" />} label="Saldo disponible" value={`$${(saldoTotal / 1000000).toFixed(1)}M`} iconBg="bg-red-50" />
+        <KpiCard icon={<Wallet size={20} className="text-[#E42313]" />} label="Saldo disponible" value={`$${formatMillones(saldoTotal)}`} iconBg="bg-red-50" />
         <KpiCard icon={<TrendingUp size={20} className="text-green-600" />} label="Balance proy. 120 días" value="+$1.2M" iconBg="bg-green-50" />
         <KpiCard icon={<Clock size={20} className="text-blue-600" />} label="Runway de caja" value="68 días" iconBg="bg-blue-50" />
         <KpiCard icon={<AlertCircle size={20} className="text-yellow-600" />} label="Compromisos a vto." value="8" iconBg="bg-yellow-50" />
@@ -34,7 +35,7 @@ export function FlujoCajaTable({ flujo, cuentas }: Props) {
           <div key={c.id} className="border border-[#E8E8E8] rounded-xl p-4">
             <p className="font-semibold text-sm text-[#0D0D0D]">{c.banco}</p>
             <p className="text-xs text-[#7A7A7A] mb-2">{c.tipoCuenta}</p>
-            <p className="text-2xl font-bold text-[#0D0D0D]">${c.saldo.toLocaleString('es-AR')}</p>
+            <p className="text-2xl font-bold text-[#0D0D0D]">${formatARS(c.saldo)}</p>
           </div>
         ))}
       </div>
@@ -56,7 +57,7 @@ export function FlujoCajaTable({ flujo, cuentas }: Props) {
                 <td className="px-4 py-3 font-medium">{f.descripcion}</td>
                 <td className="px-4 py-3">{tipoBadge(f.tipo)}</td>
                 <td className={`px-4 py-3 font-semibold ${f.ingreso ? 'text-[#22C55E]' : 'text-[#E42313]'}`}>
-                  {f.ingreso ? '+' : '-'}${f.monto.toLocaleString('es-AR')}
+                  {f.ingreso ? '+' : '-'}${formatARS(f.monto)}
                 </td>
               </tr>
             ))}

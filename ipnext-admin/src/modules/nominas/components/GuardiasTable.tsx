@@ -1,6 +1,7 @@
 import { KpiCard } from '@/components/ui/KpiCard'
 import { Shield, Clock, DollarSign, UserX } from 'lucide-react'
 import type { Guardia } from '@/types/nomina.types'
+import { formatARS } from '@/lib/formatters'
 
 export function GuardiasTable({ guardias }: { guardias: Guardia[] }) {
   const safeGuardias = Array.isArray(guardias) ? guardias : []
@@ -12,7 +13,7 @@ export function GuardiasTable({ guardias }: { guardias: Guardia[] }) {
       <div className="grid grid-cols-4 gap-4 mb-6">
         <KpiCard icon={<Shield size={20} className="text-[#E42313]" />} label="Guardias activas" value={String(safeGuardias.length)} iconBg="bg-red-50" />
         <KpiCard icon={<Clock size={20} className="text-blue-600" />} label="Horas primas mensuales" value={String(totalHoras)} iconBg="bg-blue-50" />
-        <KpiCard icon={<DollarSign size={20} className="text-[#E42313]" />} label="Costo total guardias" value={`$${totalMonto.toLocaleString('es-AR')}`} iconBg="bg-red-50" />
+        <KpiCard icon={<DollarSign size={20} className="text-[#E42313]" />} label="Costo total guardias" value={`$${formatARS(totalMonto)}`} iconBg="bg-red-50" />
         <KpiCard icon={<UserX size={20} className="text-yellow-600" />} label="Registros mes" value={String(safeGuardias.length)} iconBg="bg-yellow-50" />
       </div>
       <div className="overflow-x-auto">
@@ -30,7 +31,7 @@ export function GuardiasTable({ guardias }: { guardias: Guardia[] }) {
                 <td className="px-4 py-3 font-medium">{g.empleadoNombre ?? g.empleadoId}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{g.fecha}</td>
                 <td className="px-4 py-3">{g.horas}h</td>
-                <td className="px-4 py-3 font-semibold">${g.monto.toLocaleString('es-AR')}</td>
+                <td className="px-4 py-3 font-semibold">${formatARS(g.monto)}</td>
               </tr>
             ))}
           </tbody>

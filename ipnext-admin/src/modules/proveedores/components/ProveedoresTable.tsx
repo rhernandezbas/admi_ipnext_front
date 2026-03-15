@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Badge } from '@/components/ui/Badge'
 import { Input } from '@/components/ui/Input'
 import type { Proveedor } from '@/types/proveedor.types'
+import { formatARS } from '@/lib/formatters'
 
 interface Props {
   proveedores: Proveedor[]
@@ -47,7 +48,7 @@ export function ProveedoresTable({ proveedores, selectedId, onSelect }: Props) {
                 <td className="px-4 py-3 text-[#7A7A7A]">{p.cuit}</td>
                 <td className="px-4 py-3"><Badge variant="neutral">{p.categoria}</Badge></td>
                 <td className="px-4 py-3 text-[#7A7A7A] text-xs">{p.cbu}</td>
-                <td className="px-4 py-3 font-semibold">${p.totalAnual.toLocaleString('es-AR')}</td>
+                <td className="px-4 py-3 font-semibold">${formatARS(p.totalAnual)}</td>
               </tr>
             ))}
           </tbody>

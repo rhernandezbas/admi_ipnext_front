@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/Badge'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { FileText, CheckCircle, Clock, AlertTriangle } from 'lucide-react'
 import type { ContratoAlquiler, ContratoAlquilerEstado } from '@/types/alquiler.types'
+import { formatARS } from '@/lib/formatters'
 
 function estadoBadge(estado: ContratoAlquilerEstado) {
   if (estado === 'vigente') return <Badge variant="success">Vigente</Badge>
@@ -39,7 +40,7 @@ export function ContratosAlquilerTable({ contratos }: { contratos: ContratoAlqui
                 <td className="px-4 py-3 text-[#7A7A7A]">{c.propietario}</td>
                 <td className="px-4 py-3 text-xs text-[#7A7A7A]">{c.vigenciaDesde} – {c.vigenciaHasta}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{c.ajusteFrecuencia}</td>
-                <td className="px-4 py-3 font-semibold">${c.montoMensual.toLocaleString('es-AR')}</td>
+                <td className="px-4 py-3 font-semibold">${formatARS(c.montoMensual)}</td>
                 <td className="px-4 py-3">{estadoBadge(c.estado)}</td>
               </tr>
             ))}

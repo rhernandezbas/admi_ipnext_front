@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/Badge'
 import type { Contrato, ContratoEstado } from '@/types/proveedor.types'
+import { formatARS } from '@/lib/formatters'
 
 function estadoBadge(estado: ContratoEstado) {
   const map: Record<ContratoEstado, { variant: 'success' | 'warning' | 'danger' | 'info'; label: string }> = {
@@ -30,7 +31,7 @@ export function ContratosTable({ contratos }: { contratos: Contrato[] }) {
               <td className="px-4 py-3 font-mono text-xs font-medium">{c.codigo}</td>
               <td className="px-4 py-3 font-medium">{c.proveedor}</td>
               <td className="px-4 py-3 text-[#7A7A7A] text-xs">{c.vigenciaDesde} – {c.vigenciaHasta}</td>
-              <td className="px-4 py-3 font-semibold">${c.montoAnual.toLocaleString('es-AR')}</td>
+              <td className="px-4 py-3 font-semibold">${formatARS(c.montoAnual)}</td>
               <td className="px-4 py-3 text-[#7A7A7A]">{c.renovacion}</td>
               <td className="px-4 py-3">{estadoBadge(c.estado)}</td>
             </tr>

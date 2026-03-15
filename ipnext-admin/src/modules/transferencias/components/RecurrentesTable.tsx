@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Settings } from 'lucide-react'
 import type { Transferencia, TransferenciaEstado } from '@/types/transferencia.types'
+import { formatARS } from '@/lib/formatters'
 
 function estadoBadge(estado: TransferenciaEstado) {
   const map: Record<TransferenciaEstado, { variant: 'success' | 'warning' | 'danger' | 'neutral' | 'info'; label: string }> = {
@@ -43,7 +44,7 @@ export function RecurrentesTable({ data }: Props) {
               <td className="px-4 py-3 text-[#7A7A7A] capitalize">{t.frecuencia}</td>
               <td className="px-4 py-3 text-[#7A7A7A]">{t.fechaProximoPago}</td>
               <td className="px-4 py-3 text-[#7A7A7A]">{t.fechaProximoPago}</td>
-              <td className="px-4 py-3 font-semibold">${t.monto.toLocaleString('es-AR')}</td>
+              <td className="px-4 py-3 font-semibold">${formatARS(t.monto)}</td>
               <td className="px-4 py-3">{estadoBadge(t.estado)}</td>
               <td className="px-4 py-3">
                 <Button variant="ghost" className="p-1.5"><Settings size={15} /></Button>

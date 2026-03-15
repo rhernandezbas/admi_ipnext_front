@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, getDay, isSameMonth } from 'date-fns'
 import { es } from 'date-fns/locale'
 import type { CalendarioDia, TransferenciaEstado } from '@/types/transferencia.types'
+import { formatARS } from '@/lib/formatters'
 
 const estadoChipColor: Record<TransferenciaEstado, string> = {
   vencido: 'bg-[#FEE2E2] text-[#E42313]',
@@ -61,7 +62,7 @@ export function CalendarioView({ dias }: Props) {
               <div className="mt-1 flex flex-col gap-0.5">
                 {diaData?.pagos.map((p) => (
                   <div key={p.id} className={`text-xs px-1.5 py-0.5 rounded truncate ${estadoChipColor[p.estado]}`}>
-                    {p.beneficiario} ${p.monto.toLocaleString('es-AR')}
+                    {p.beneficiario} ${formatARS(p.monto)}
                   </div>
                 ))}
               </div>

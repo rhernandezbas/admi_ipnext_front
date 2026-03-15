@@ -2,6 +2,7 @@ import { X } from 'lucide-react'
 import { Avatar } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
 import type { Proveedor } from '@/types/proveedor.types'
+import { formatARS } from '@/lib/formatters'
 
 interface Props {
   proveedor: Proveedor
@@ -39,21 +40,21 @@ export function ProveedorDetailPanel({ proveedor, onClose }: Props) {
           {pagos.map((p, i) => (
             <div key={p.id} className={`flex justify-between text-sm ${i === 0 ? 'font-semibold' : ''} ${p.vencido ? 'text-[#E42313]' : 'text-[#0D0D0D]'}`}>
               <span className="text-[#7A7A7A] font-normal">{p.fecha}</span>
-              <span>${p.monto.toLocaleString('es-AR')}</span>
+              <span>${formatARS(p.monto)}</span>
             </div>
           ))}
         </div>
       </div>
 
       <div className="border-t border-[#E8E8E8] pt-4 flex flex-col gap-1 text-sm">
-        <div className="flex justify-between"><span className="text-[#7A7A7A]">Promedio mensual</span><span>${promedio.toLocaleString('es-AR')}</span></div>
-        <div className="flex justify-between"><span className="text-[#7A7A7A]">Máx. pago</span><span>${maxPago.toLocaleString('es-AR')}</span></div>
-        <div className="flex justify-between"><span className="text-[#7A7A7A]">Mín. pago</span><span>${minPago.toLocaleString('es-AR')}</span></div>
+        <div className="flex justify-between"><span className="text-[#7A7A7A]">Promedio mensual</span><span>${formatARS(promedio)}</span></div>
+        <div className="flex justify-between"><span className="text-[#7A7A7A]">Máx. pago</span><span>${formatARS(maxPago)}</span></div>
+        <div className="flex justify-between"><span className="text-[#7A7A7A]">Mín. pago</span><span>${formatARS(minPago)}</span></div>
       </div>
 
       <div className="border-t border-[#E8E8E8] pt-4">
         <p className="text-xs text-[#7A7A7A]">Total pagos año</p>
-        <p className="text-2xl font-bold text-[#0D0D0D]">${proveedor.totalAnual.toLocaleString('es-AR')}</p>
+        <p className="text-2xl font-bold text-[#0D0D0D]">${formatARS(proveedor.totalAnual)}</p>
       </div>
 
       <Button className="w-full justify-center text-sm">Registrar un Pago Nuevo</Button>

@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/Textarea'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { historialBeneficiarioMock } from '@/mocks/transferencias.mock'
+import { formatARS } from '@/lib/formatters'
 
 const categoriaOptions = [
   { value: '', label: 'Seleccioná categoría' },
@@ -73,7 +74,7 @@ export function NuevaTransferenciaForm() {
                   <tbody>{historialBeneficiarioMock.map((h) => (
                     <tr key={h.id} className="border-b border-[#E8E8E8]">
                       <td className="py-2 text-[#7A7A7A]">{h.fecha}</td>
-                      <td className="py-2 font-medium">${h.monto.toLocaleString('es-AR')}</td>
+                      <td className="py-2 font-medium">${formatARS(h.monto)}</td>
                       <td className="py-2 text-green-600 capitalize">{h.estado}</td>
                     </tr>
                   ))}</tbody>

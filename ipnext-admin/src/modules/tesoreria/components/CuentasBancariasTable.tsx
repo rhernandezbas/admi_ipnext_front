@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/Badge'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { Landmark, CheckCircle, TrendingUp, Activity } from 'lucide-react'
 import type { CuentaBancaria } from '@/types/tesoreria.types'
+import { formatARS, formatMillones } from '@/lib/formatters'
 
 export function CuentasBancariasTable({ cuentas }: { cuentas: CuentaBancaria[] }) {
   const safeCuentas = Array.isArray(cuentas) ? cuentas : []
@@ -13,7 +14,7 @@ export function CuentasBancariasTable({ cuentas }: { cuentas: CuentaBancaria[] }
     <div>
       <p className="text-sm text-[#7A7A7A] mb-4">Registro de movimientos — Marzo 2026</p>
       <div className="grid grid-cols-4 gap-4 mb-6">
-        <KpiCard icon={<Landmark size={20} className="text-[#E42313]" />} label="Saldo total" value={`$${(total / 1000000).toFixed(2)}M`} iconBg="bg-red-50" />
+        <KpiCard icon={<Landmark size={20} className="text-[#E42313]" />} label="Saldo total" value={`$${formatMillones(total)}`} iconBg="bg-red-50" />
         <KpiCard icon={<CheckCircle size={20} className="text-green-600" />} label="Cuentas activas" value={String(activas)} iconBg="bg-green-50" />
         <KpiCard icon={<TrendingUp size={20} className="text-green-600" />} label="Mayor saldo" value={mayor?.banco ?? '—'} iconBg="bg-green-50" />
         <KpiCard icon={<Activity size={20} className="text-blue-600" />} label="Movimientos del mes" value="47" iconBg="bg-blue-50" />
@@ -33,7 +34,7 @@ export function CuentasBancariasTable({ cuentas }: { cuentas: CuentaBancaria[] }
                 <td className="px-4 py-3"><p className="font-medium">{c.banco}</p><p className="text-xs text-[#7A7A7A]">{c.tipoCuenta} — {c.descripcion}</p></td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{c.tipoEmpresa}</td>
                 <td className="px-4 py-3 font-mono text-xs text-[#7A7A7A]">{c.nroCuenta}</td>
-                <td className="px-4 py-3 font-semibold text-lg">${c.saldo.toLocaleString('es-AR')}</td>
+                <td className="px-4 py-3 font-semibold text-lg">${formatARS(c.saldo)}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{c.ultimaActualizacion}</td>
                 <td className="px-4 py-3">{c.estado === 'activo' ? <Badge variant="success">Activo</Badge> : <Badge variant="neutral">Inactivo</Badge>}</td>
               </tr>

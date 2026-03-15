@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import type { Transferencia, TransferenciaEstado } from '@/types/transferencia.types'
+import { formatARS } from '@/lib/formatters'
 
 function estadoBadge(estado: TransferenciaEstado) {
   const map: Record<TransferenciaEstado, { variant: 'success' | 'warning' | 'danger' | 'neutral' | 'info'; label: string }> = {
@@ -96,7 +97,7 @@ export function TransferenciasTable({ data }: Props) {
                 <td className="px-4 py-3"><Badge variant="neutral">{t.categoria}</Badge></td>
                 <td className="px-4 py-3 text-[#7A7A7A] whitespace-nowrap">{t.fechaProximoPago}</td>
                 <td className="px-4 py-3 text-[#7A7A7A] capitalize">{t.tipo}</td>
-                <td className="px-4 py-3 font-semibold whitespace-nowrap">${t.monto.toLocaleString('es-AR')}</td>
+                <td className="px-4 py-3 font-semibold whitespace-nowrap">${formatARS(t.monto)}</td>
                 <td className="px-4 py-3">{estadoBadge(t.estado)}</td>
                 <td className="px-4 py-3 text-[#7A7A7A] text-xs">{t.notas ?? '—'}</td>
               </tr>
