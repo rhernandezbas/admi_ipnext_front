@@ -9,6 +9,9 @@ import { ProveedorDetailPanel } from './components/ProveedorDetailPanel'
 import { ContratosTable } from './components/ContratosTable'
 import { RankingChart } from './components/RankingChart'
 import { useProveedores, useContratos, useRanking } from '@/hooks/useProveedores'
+import { NuevoProveedorModal } from './components/NuevoProveedorModal'
+import { NuevoContratoProveedorModal } from './components/NuevoContratoProveedorModal'
+import { usePermiso } from '@/hooks/usePermiso'
 
 const tabs = [
   { id: 'directorio', label: 'Directorio' },
@@ -19,6 +22,9 @@ const tabs = [
 export default function ProveedoresPage() {
   const [activeTab, setActiveTab] = useState('directorio')
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [modalProveedor, setModalProveedor] = useState(false)
+  const [modalContrato, setModalContrato] = useState(false)
+  const puedeEscribir = usePermiso('proveedores', 'escritura')
   const proveedoresQuery = useProveedores()
   const contratosQuery = useContratos()
   const rankingQuery = useRanking()
@@ -34,7 +40,12 @@ export default function ProveedoresPage() {
       <PageHeader
         title="Proveedores"
         subtitle="Directorio de proveedores y contratos"
-        actions={<Button><Plus size={16} />Nuevo Proveedor</Button>}
+        actions={
+          <>
+            {puedeEscribir && <Button variant="secondary" onClick={() => setModalContrato(true)}><Plus size={16} />Nuevo Contrato</Button>}
+            {puedeEscribir && <Button onClick={() => setModalProveedor(true)}><Plus size={16} />Nuevo Proveedor</Button>}
+          </>
+        }
       />
       <Card className="p-0 overflow-hidden">
         <div className="px-6 pt-4">
@@ -67,6 +78,9 @@ export default function ProveedoresPage() {
           )}
         </div>
       </Card>
+
+      <NuevoProveedorModal open={modalProveedor} onClose={() => setModalProveedor(false)} />
+      <NuevoContratoProveedorModal open={modalContrato} onClose={() => setModalContrato(false)} />
     </div>
   )
 }

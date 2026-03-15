@@ -10,6 +10,7 @@ import AlquileresPage from '@/modules/alquileres/AlquileresPage'
 import TesoreriaPage from '@/modules/tesoreria/TesoreriaPage'
 import ReportesPage from '@/modules/reportes/ReportesPage'
 import LoginPage from '@/modules/auth/LoginPage'
+import { UsuariosPage } from '@/modules/usuarios/UsuariosPage'
 
 const routesMeta: Record<string, string> = {
   '/': 'Dashboard',
@@ -20,6 +21,7 @@ const routesMeta: Record<string, string> = {
   '/alquileres': 'Alquileres & Inmuebles',
   '/tesoreria': 'Tesorería & Bancos',
   '/reportes': 'Reportes & Analytics',
+  '/usuarios': 'Gestión de Usuarios',
 }
 
 function WithLayout({ path, children }: { path: string; children: React.ReactNode }) {
@@ -42,6 +44,7 @@ export default function AppRouter() {
       <Route path="/alquileres" element={<WithLayout path="/alquileres"><AlquileresPage /></WithLayout>} />
       <Route path="/tesoreria" element={<WithLayout path="/tesoreria"><TesoreriaPage /></WithLayout>} />
       <Route path="/reportes" element={<WithLayout path="/reportes"><ReportesPage /></WithLayout>} />
+      <Route path="/usuarios" element={<ProtectedRoute><PageLayout title="Gestión de Usuarios"><UsuariosPage /></PageLayout></ProtectedRoute>} />
     </Routes>
   )
 }

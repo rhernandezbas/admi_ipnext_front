@@ -9,6 +9,9 @@ import { ContratosAlquilerTable } from './components/ContratosAlquilerTable'
 import { PagosRecibosTable } from './components/PagosRecibosTable'
 import { VencimientosTable } from './components/VencimientosTable'
 import { useAlquileres, useContratosAlquiler, usePagosAlquiler, useVencimientos } from '@/hooks/useAlquileres'
+import { RegistrarPagoModal } from './components/RegistrarPagoModal'
+import { NuevoInmuebleModal } from './components/NuevoInmuebleModal'
+import { usePermiso } from '@/hooks/usePermiso'
 
 const tabs = [
   { id: 'inmuebles', label: 'Inmuebles' },
@@ -19,6 +22,9 @@ const tabs = [
 
 export default function AlquileresPage() {
   const [activeTab, setActiveTab] = useState('inmuebles')
+  const [modalPago, setModalPago] = useState(false)
+  const [modalInmueble, setModalInmueble] = useState(false)
+  const puedeEscribir = usePermiso('alquileres', 'escritura')
   const inmueblesQuery = useAlquileres()
   const contratosQuery = useContratosAlquiler()
   const pagosQuery = usePagosAlquiler()
@@ -34,8 +40,8 @@ export default function AlquileresPage() {
         subtitle="Gestión de inmuebles y contratos de alquiler"
         actions={
           <>
-            <Button variant="secondary">Registrar Pago</Button>
-            <Button><Plus size={16} />Nuevo Inmueble</Button>
+            {puedeEscribir && <Button variant="secondary" onClick={() => setModalPago(true)}>Registrar Pago</Button>}
+            {puedeEscribir && <Button onClick={() => setModalInmueble(true)}><Plus size={16} />Nuevo Inmueble</Button>}
           </>
         }
       />
@@ -66,6 +72,13 @@ export default function AlquileresPage() {
           )}
         </div>
       </Card>
+
+      <RegistrarPagoModal
+        open={modalPago}
+        onClose={() => setModalPago(false)}
+        inmuebles={inmueblesQuery.data ?? []}
+      />
+      <NuevoInmuebleModal open={modalInmueble} onClose={() => setModalInmueble(false)} />
     </div>
   )
 }

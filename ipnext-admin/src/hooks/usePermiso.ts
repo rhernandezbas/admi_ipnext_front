@@ -1,13 +1,14 @@
 import { useAuthStore } from '@/store/authStore'
+import type { UserPermisos } from '@/store/authStore'
 
-export function usePermiso() {
+type Modulo = keyof UserPermisos
+
+export function usePermiso(modulo: Modulo, nivel?: 'lectura' | 'escritura'): boolean {
   const { user } = useAuthStore()
-  const isAdmin = user?.rol === 'admin'
-
-  return {
-    canWrite: isAdmin,
-    canRead: true,
-    canApprove: isAdmin,
-    isAdmin,
-  }
+  if (!user) return false
+  if (user.rol === 'admin') return true
+  const p = user.permisos[modulo]
+  if (nivel === 'escritura') return p === 'escritura'
+  if (nivel === 'lectura') return p === 'lectura' || p === 'escritura'
+  return Boolean(p)
 }

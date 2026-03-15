@@ -9,6 +9,8 @@ import { CuentasBancariasTable } from './components/CuentasBancariasTable'
 import { ConciliacionTable } from './components/ConciliacionTable'
 import { ProyeccionesTable } from './components/ProyeccionesTable'
 import { useFlujoCaja, useCuentasBancarias, useConciliacion, useProyecciones } from '@/hooks/useTesoreria'
+import { RegistrarMovimientoModal } from './components/RegistrarMovimientoModal'
+import { usePermiso } from '@/hooks/usePermiso'
 
 const tabs = [
   { id: 'flujo', label: 'Flujo de Caja' },
@@ -19,6 +21,8 @@ const tabs = [
 
 export default function TesoreriaPage() {
   const [activeTab, setActiveTab] = useState('flujo')
+  const [modalMovimiento, setModalMovimiento] = useState(false)
+  const puedeEscribir = usePermiso('tesoreria', 'escritura')
   const flujoCajaQuery = useFlujoCaja()
   const cuentasQuery = useCuentasBancarias()
   const conciliacionQuery = useConciliacion()
@@ -35,7 +39,7 @@ export default function TesoreriaPage() {
         actions={
           <>
             <Button variant="secondary"><Download size={16} />Exportar</Button>
-            <Button><Plus size={16} />Registrar Movimiento</Button>
+            {puedeEscribir && <Button onClick={() => setModalMovimiento(true)}><Plus size={16} />Registrar Movimiento</Button>}
           </>
         }
       />
@@ -66,6 +70,8 @@ export default function TesoreriaPage() {
           )}
         </div>
       </Card>
+
+      <RegistrarMovimientoModal open={modalMovimiento} onClose={() => setModalMovimiento(false)} />
     </div>
   )
 }
