@@ -28,7 +28,7 @@ export function RankingChart({ ranking }: Props) {
               <CartesianGrid strokeDasharray="3 3" stroke="#E8E8E8" horizontal={false} />
               <XAxis type="number" tick={{ fontSize: 11, fill: '#7A7A7A' }} tickFormatter={(v: number) => `$${(v / 1000).toFixed(0)}K`} />
               <YAxis type="category" dataKey="name" tick={{ fontSize: 12, fill: '#7A7A7A' }} width={80} />
-              <Tooltip formatter={(v: number | string | undefined) => [`$${Number(v ?? 0).toLocaleString('es-AR')}`, 'Total']} />
+              <Tooltip formatter={(v) => [`$${Number(v ?? 0).toLocaleString('es-AR')}`, 'Total']} />
               <Bar dataKey="total" fill="#E42313" radius={[0, 4, 4, 0]} />
             </BarChart>
           </ResponsiveContainer>
