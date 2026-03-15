@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import type { PagoUrgente } from '@/types/dashboard.types'
-import { formatARS } from '@/lib/formatters'
+import { formatARS, formatFecha } from '@/lib/formatters'
 
 function estadoBadge(estado: string) {
   if (estado === 'vencido') return <Badge variant="danger">Vencido</Badge>
@@ -27,7 +27,7 @@ export function UrgentPaymentsTable({ payments }: { payments: PagoUrgente[] }) {
               <td className="px-4 py-3 font-medium">{p.beneficiario}</td>
               <td className="px-4 py-3 text-[#7A7A7A]">{p.categoria}</td>
               <td className="px-4 py-3 font-semibold">${formatARS(p.monto)} {p.moneda}</td>
-              <td className="px-4 py-3 text-[#7A7A7A]">{p.fechaPago}</td>
+              <td className="px-4 py-3 text-[#7A7A7A]">{formatFecha(p.fechaPago)}</td>
               <td className="px-4 py-3">{estadoBadge(p.estado)}</td>
               <td className="px-4 py-3">
                 <Button variant="secondary" className="text-xs py-1 px-3">Pagar</Button>

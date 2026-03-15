@@ -10,10 +10,10 @@ export const flujoCajaMock: FlujoCaja[] = [
 ]
 
 export const cuentasBancariasMock: CuentaBancaria[] = [
-  { id: '1', banco: 'Banco Galicia', tipoCuenta: 'Cuenta Corriente', descripcion: 'Cuenta operativa principal', tipoEmpresa: 'CBU', nroCuenta: '0040070840000044455540', saldo: 2450000, ultimaActualizacion: '2026-03-14', estado: 'activo' },
-  { id: '2', banco: 'Banco Nación', tipoCuenta: 'Caja de Ahorros', descripcion: 'Reservas y contingencias', tipoEmpresa: 'CBU', nroCuenta: '0110057830005703456735', saldo: 1200000, ultimaActualizacion: '2026-03-14', estado: 'activo' },
-  { id: '3', banco: 'Mercado Pago', tipoCuenta: 'Cuenta Virtual', descripcion: 'Cobros digitales', tipoEmpresa: 'CVU', nroCuenta: 'ipnext.mp', saldo: 385000, ultimaActualizacion: '2026-03-15', estado: 'activo' },
-  { id: '4', banco: 'BBVA', tipoCuenta: 'Cuenta Corriente', descripcion: 'Pagos internacionales', tipoEmpresa: 'CBU', nroCuenta: '0170099840000099887760', saldo: 45000, ultimaActualizacion: '2026-03-10', estado: 'inactivo' },
+  { id: '1', banco: 'Banco Galicia', tipoCuenta: 'Cuenta Corriente', descripcion: 'Cuenta operativa principal', tipoEmpresa: 'CBU', nroCuenta: '0040070840000044455540', saldoActual: 2450000, ultimaActualizacion: '2026-03-14', activa: true },
+  { id: '2', banco: 'Banco Nación', tipoCuenta: 'Caja de Ahorros', descripcion: 'Reservas y contingencias', tipoEmpresa: 'CBU', nroCuenta: '0110057830005703456735', saldoActual: 1200000, ultimaActualizacion: '2026-03-14', activa: true },
+  { id: '3', banco: 'Mercado Pago', tipoCuenta: 'Cuenta Virtual', descripcion: 'Cobros digitales', tipoEmpresa: 'CVU', nroCuenta: 'ipnext.mp', saldoActual: 385000, ultimaActualizacion: '2026-03-15', activa: true },
+  { id: '4', banco: 'BBVA', tipoCuenta: 'Cuenta Corriente', descripcion: 'Pagos internacionales', tipoEmpresa: 'CBU', nroCuenta: '0170099840000099887760', saldoActual: 45000, ultimaActualizacion: '2026-03-10', activa: false },
 ]
 
 export const conciliacionMock: MovimientoConciliacion[] = [

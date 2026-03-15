@@ -13,14 +13,14 @@ export function RankingChart({ ranking }: Props) {
   const totalAcumulado = safeRanking.reduce((a, r) => a + r.totalPagado, 0)
   const mayorProveedor = safeRanking[0]?.proveedor ?? '—'
 
-  const chartData = safeRanking.map((r) => ({ name: r.proveedor.split(' ')[0], total: r.totalPagado }))
+  const chartData = safeRanking.map((r) => ({ name: (r.proveedor ?? '').split(' ')[0] || '?', total: r.totalPagado ?? 0 }))
 
   return (
     <div>
       <div className="grid grid-cols-3 gap-4 mb-6">
         <KpiCard icon={<DollarSign size={20} className="text-[#E42313]" />} label="Total acumulado" value={`$${formatMillones(totalAcumulado)}`} iconBg="bg-red-50" />
         <KpiCard icon={<Building2 size={20} className="text-blue-600" />} label="Proveedores activos" value={String(safeRanking.length)} iconBg="bg-blue-50" />
-        <KpiCard icon={<Trophy size={20} className="text-yellow-600" />} label="Mayor proveedor" value={mayorProveedor.split(' ')[0]} iconBg="bg-yellow-50" />
+        <KpiCard icon={<Trophy size={20} className="text-yellow-600" />} label="Mayor proveedor" value={(mayorProveedor ?? '—').split(' ')[0]} iconBg="bg-yellow-50" />
       </div>
 
       <div className="flex gap-6">

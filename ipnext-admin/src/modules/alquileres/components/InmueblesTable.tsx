@@ -38,7 +38,7 @@ export function InmueblesTable({ inmuebles }: { inmuebles: Inmueble[] }) {
                 <td className="px-4 py-3"><p className="font-medium">{i.nombre}</p><p className="text-xs text-[#7A7A7A]">{i.direccion}</p></td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{i.propietario}</td>
                 <td className="px-4 py-3"><Badge variant="neutral">{i.uso}</Badge></td>
-                <td className="px-4 py-3 font-semibold">${formatARS(i.alquilerMes)}</td>
+                <td className="px-4 py-3 font-semibold">${formatARS(i.alquilerMensual)}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{i.proximoAjuste}</td>
                 <td className="px-4 py-3 text-xs text-[#7A7A7A]">{i.cbu}</td>
                 <td className="px-4 py-3">{estadoBadge(i.estado)}</td>

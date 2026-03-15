@@ -57,6 +57,9 @@ src/
     transferencias.service.ts
     nominas.service.ts
     ...
+  lib/                # Utilidades transversales
+    api.ts            # cliente Axios (withCredentials, envelope interceptor)
+    formatters.ts     # formatARS / formatMillones / formatMiles — formato numérico defensivo
   store/              # Estado global (Context o Zustand)
     authStore.ts
     uiStore.ts
@@ -76,12 +79,13 @@ src/
 3. **Custom hooks** encapsulan fetch + estado local por pantalla.
 4. **Services** son funciones puras que llaman a la API — sin estado.
 5. **Un archivo por componente** — no mezclar múltiples componentes en un archivo.
+6. **Utilidades en `lib/`** — funciones puras reutilizables (formatters, helpers). Nunca llamar `.toLocaleString()` o `.toFixed()` directamente en componentes; usar siempre `formatARS`, `formatMillones` o `formatMiles` de `@/lib/formatters` para evitar crashes con valores `undefined`/`null` del backend.
 
 ## Tests
 
 ```
 src/
-  lib/__tests__/         # Tests del cliente API (axios config, interceptors)
+  lib/__tests__/         # Tests del cliente API y utilidades (formatters, api.ts)
   services/__tests__/    # Tests de servicios por módulo
   store/__tests__/       # Tests del store de autenticación
   types/__tests__/       # Tests de tipos TypeScript (contratos de tipos)

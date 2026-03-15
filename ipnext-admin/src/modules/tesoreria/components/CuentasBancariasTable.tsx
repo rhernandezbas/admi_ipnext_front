@@ -6,9 +6,9 @@ import { formatARS, formatMillones } from '@/lib/formatters'
 
 export function CuentasBancariasTable({ cuentas }: { cuentas: CuentaBancaria[] }) {
   const safeCuentas = Array.isArray(cuentas) ? cuentas : []
-  const total = safeCuentas.filter((c) => c.estado === 'activo').reduce((a, c) => a + c.saldo, 0)
-  const activas = safeCuentas.filter((c) => c.estado === 'activo').length
-  const mayor = safeCuentas.length ? safeCuentas.reduce((a, b) => a.saldo > b.saldo ? a : b, safeCuentas[0]) : null
+  const total = safeCuentas.filter((c) => c.activa === true).reduce((a, c) => a + (c.saldoActual ?? 0), 0)
+  const activas = safeCuentas.filter((c) => c.activa === true).length
+  const mayor = safeCuentas.length ? safeCuentas.reduce((a, b) => (a.saldoActual ?? 0) > (b.saldoActual ?? 0) ? a : b, safeCuentas[0]) : null
 
   return (
     <div>
@@ -34,9 +34,9 @@ export function CuentasBancariasTable({ cuentas }: { cuentas: CuentaBancaria[] }
                 <td className="px-4 py-3"><p className="font-medium">{c.banco}</p><p className="text-xs text-[#7A7A7A]">{c.tipoCuenta} — {c.descripcion}</p></td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{c.tipoEmpresa}</td>
                 <td className="px-4 py-3 font-mono text-xs text-[#7A7A7A]">{c.nroCuenta}</td>
-                <td className="px-4 py-3 font-semibold text-lg">${formatARS(c.saldo)}</td>
+                <td className="px-4 py-3 font-semibold text-lg">${formatARS(c.saldoActual)}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{c.ultimaActualizacion}</td>
-                <td className="px-4 py-3">{c.estado === 'activo' ? <Badge variant="success">Activo</Badge> : <Badge variant="neutral">Inactivo</Badge>}</td>
+                <td className="px-4 py-3">{c.activa ? <Badge variant="success">Activo</Badge> : <Badge variant="neutral">Inactivo</Badge>}</td>
               </tr>
             ))}
           </tbody>

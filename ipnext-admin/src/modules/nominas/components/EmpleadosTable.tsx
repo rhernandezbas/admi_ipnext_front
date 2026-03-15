@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/Button'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { Users, DollarSign, TrendingUp, Clock } from 'lucide-react'
 import type { Empleado } from '@/types/nomina.types'
-import { formatARS, formatMiles } from '@/lib/formatters'
+import { formatARS, formatMiles, formatFecha } from '@/lib/formatters'
 interface NominaResumen {
   totalBruto: number
   cargasSociales: number
@@ -51,7 +51,7 @@ export function EmpleadosTable({ empleados, resumen }: Props) {
                   <td className="px-4 py-3 text-[#7A7A7A]">{e.puesto}</td>
                   <td className="px-4 py-3 font-semibold">${formatARS(e.sueldoBruto)}</td>
                   <td className="px-4 py-3 text-[#7A7A7A]">{e.obraSocial}</td>
-                  <td className="px-4 py-3 text-[#7A7A7A]">{e.fechaIngreso}</td>
+                  <td className="px-4 py-3 text-[#7A7A7A]">{formatFecha(e.fechaIngreso)}</td>
                 </tr>
               ))}
             </tbody>

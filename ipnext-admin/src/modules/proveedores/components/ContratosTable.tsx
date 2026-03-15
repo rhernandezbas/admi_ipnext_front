@@ -2,15 +2,15 @@ import { Badge } from '@/components/ui/Badge'
 import type { Contrato, ContratoEstado } from '@/types/proveedor.types'
 import { formatARS } from '@/lib/formatters'
 
-function estadoBadge(estado: ContratoEstado) {
+function estadoBadge(estado: ContratoEstado | undefined) {
   const map: Record<ContratoEstado, { variant: 'success' | 'warning' | 'danger' | 'info'; label: string }> = {
     activo: { variant: 'success', label: 'Activo' },
-    proximo_vencer: { variant: 'warning', label: 'Próximo a v.' },
+    proximo_a_vencer: { variant: 'warning', label: 'Próximo a v.' },
     vencido: { variant: 'danger', label: 'Vencido' },
     en_proceso: { variant: 'info', label: 'En proceso' },
   }
-  const { variant, label } = map[estado]
-  return <Badge variant={variant}>{label}</Badge>
+  const badge = (estado ? map[estado] : null) ?? { variant: 'neutral' as const, label: estado ?? '—' }
+  return <Badge variant={badge.variant}>{badge.label}</Badge>
 }
 
 export function ContratosTable({ contratos }: { contratos: Contrato[] }) {

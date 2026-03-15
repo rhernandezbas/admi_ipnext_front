@@ -14,9 +14,9 @@ export interface CuentaBancaria {
   descripcion: string
   tipoEmpresa: string
   nroCuenta: string
-  saldo: number
+  saldoActual: number
   ultimaActualizacion: string
-  estado: 'activo' | 'inactivo'
+  activa: boolean
 }
 
 export type ConciliacionEstado = 'conciliado' | 'pendiente' | 'observado'

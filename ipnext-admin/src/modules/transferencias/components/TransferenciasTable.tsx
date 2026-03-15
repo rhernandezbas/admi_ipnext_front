@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import type { Transferencia, TransferenciaEstado } from '@/types/transferencia.types'
-import { formatARS } from '@/lib/formatters'
+import { formatARS, formatFecha } from '@/lib/formatters'
 
-function estadoBadge(estado: TransferenciaEstado) {
+function estadoBadge(estado: TransferenciaEstado | undefined) {
   const map: Record<TransferenciaEstado, { variant: 'success' | 'warning' | 'danger' | 'neutral' | 'info'; label: string }> = {
     pendiente: { variant: 'warning', label: 'PENDIENTE' },
     pagado: { variant: 'success', label: 'PAGADO' },
@@ -15,8 +15,8 @@ function estadoBadge(estado: TransferenciaEstado) {
     programado: { variant: 'success', label: 'PROGRAMADO' },
     en_proceso: { variant: 'info', label: 'EN PROCESO' },
   }
-  const { variant, label } = map[estado]
-  return <Badge variant={variant}>{label}</Badge>
+  const badge = (estado ? map[estado] : null) ?? { variant: 'neutral' as const, label: estado ?? '—' }
+  return <Badge variant={badge.variant}>{badge.label}</Badge>
 }
 
 const categoriaOptions = [
@@ -95,7 +95,7 @@ export function TransferenciasTable({ data }: Props) {
                 </td>
                 <td className="px-4 py-3 text-[#7A7A7A] capitalize">{t.frecuencia}</td>
                 <td className="px-4 py-3"><Badge variant="neutral">{t.categoria}</Badge></td>
-                <td className="px-4 py-3 text-[#7A7A7A] whitespace-nowrap">{t.fechaProximoPago}</td>
+                <td className="px-4 py-3 text-[#7A7A7A] whitespace-nowrap">{formatFecha(t.fechaProximoPago)}</td>
                 <td className="px-4 py-3 text-[#7A7A7A] capitalize">{t.tipo}</td>
                 <td className="px-4 py-3 font-semibold whitespace-nowrap">${formatARS(t.monto)}</td>
                 <td className="px-4 py-3">{estadoBadge(t.estado)}</td>

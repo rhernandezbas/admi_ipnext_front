@@ -17,7 +17,7 @@ export interface HistorialPago {
   vencido?: boolean
 }
 
-export type ContratoEstado = 'activo' | 'proximo_vencer' | 'vencido' | 'en_proceso'
+export type ContratoEstado = 'activo' | 'proximo_a_vencer' | 'vencido' | 'en_proceso'
 
 export interface Contrato {
   id: string

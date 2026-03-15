@@ -1,10 +1,10 @@
 import type { Inmueble, ContratoAlquiler, PagoAlquiler, VencimientoAlquiler } from '@/types/alquiler.types'
 
 export const inmueblesMock: Inmueble[] = [
-  { id: '1', nombre: 'Sede Central', direccion: 'Av. Corrientes 1234, CABA', propietario: 'Carlos Pérez', uso: 'Oficina', alquilerMes: 180000, proximoAjuste: '2026-06-01', cbu: 'carlosperez.mp', estado: 'pendiente' },
-  { id: '2', nombre: 'Depósito Norte', direccion: 'Ruta 8 km 32, GBA', propietario: 'Inversiones SA', uso: 'Depósito', alquilerMes: 95000, proximoAjuste: '2026-04-01', cbu: '0720030120000055566670', estado: 'pagado' },
-  { id: '3', nombre: 'Nodo Zona Sur', direccion: 'Av. Hipólito Yrigoyen 567, Lanús', propietario: 'Roberto García', uso: 'Nodo', alquilerMes: 45000, proximoAjuste: '2026-03-20', cbu: 'robertog.mp', estado: 'vencido' },
-  { id: '4', nombre: 'Oficina Administrativa', direccion: 'Marcelo T. de Alvear 890, CABA', propietario: 'María López', uso: 'Oficina', alquilerMes: 220000, proximoAjuste: '2026-09-01', cbu: '0720030120000044455540', estado: 'pagado' },
+  { id: '1', nombre: 'Sede Central', direccion: 'Av. Corrientes 1234, CABA', propietario: 'Carlos Pérez', uso: 'Oficina', alquilerMensual: 180000, proximoAjuste: '2026-06-01', cbu: 'carlosperez.mp', estado: 'pendiente' },
+  { id: '2', nombre: 'Depósito Norte', direccion: 'Ruta 8 km 32, GBA', propietario: 'Inversiones SA', uso: 'Depósito', alquilerMensual: 95000, proximoAjuste: '2026-04-01', cbu: '0720030120000055566670', estado: 'pagado' },
+  { id: '3', nombre: 'Nodo Zona Sur', direccion: 'Av. Hipólito Yrigoyen 567, Lanús', propietario: 'Roberto García', uso: 'Nodo', alquilerMensual: 45000, proximoAjuste: '2026-03-20', cbu: 'robertog.mp', estado: 'vencido' },
+  { id: '4', nombre: 'Oficina Administrativa', direccion: 'Marcelo T. de Alvear 890, CABA', propietario: 'María López', uso: 'Oficina', alquilerMensual: 220000, proximoAjuste: '2026-09-01', cbu: '0720030120000044455540', estado: 'pagado' },
 ]
 
 export const contratosAlquilerMock: ContratoAlquiler[] = [

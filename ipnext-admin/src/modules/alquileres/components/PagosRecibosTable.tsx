@@ -2,7 +2,7 @@ import { Badge } from '@/components/ui/Badge'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { DollarSign, ReceiptText, Clock, Calendar } from 'lucide-react'
 import type { PagoAlquiler } from '@/types/alquiler.types'
-import { formatARS } from '@/lib/formatters'
+import { formatARS, formatFecha } from '@/lib/formatters'
 
 export function PagosRecibosTable({ pagos }: { pagos: PagoAlquiler[] }) {
   const safePagos = Array.isArray(pagos) ? pagos : []
@@ -33,7 +33,7 @@ export function PagosRecibosTable({ pagos }: { pagos: PagoAlquiler[] }) {
               <tr key={p.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
                 <td className="px-4 py-3 font-medium">{p.inmuebleNombre ?? p.inmuebleId}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{p.periodo}</td>
-                <td className="px-4 py-3 text-[#7A7A7A]">{p.fechaPago || '—'}</td>
+                <td className="px-4 py-3 text-[#7A7A7A]">{formatFecha(p.fechaPago)}</td>
                 <td className="px-4 py-3 font-semibold">${formatARS(p.monto)}</td>
                 <td className="px-4 py-3 font-mono text-xs text-[#7A7A7A]">{p.nroRecibo ?? '—'}</td>
                 <td className="px-4 py-3">{p.estado === 'pagado' ? <Badge variant="success">Pagado</Badge> : <Badge variant="warning">Pendiente</Badge>}</td>

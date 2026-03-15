@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { formatARS, formatMillones, formatMiles } from '../formatters'
+import { formatARS, formatMillones, formatMiles, formatFecha } from '../formatters'
 
 describe('formatARS', () => {
   it('returns 0 for undefined', () => {
@@ -38,5 +38,25 @@ describe('formatMiles', () => {
   })
   it('returns 0 for undefined', () => {
     expect(formatMiles(undefined)).toBe('0K')
+  })
+})
+
+describe('formatFecha', () => {
+  it('returns — for undefined', () => {
+    expect(formatFecha(undefined)).toBe('—')
+  })
+  it('returns — for null', () => {
+    expect(formatFecha(null)).toBe('—')
+  })
+  it('returns — for empty string', () => {
+    expect(formatFecha('')).toBe('—')
+  })
+  it('formats ISO date to DD/MM/YYYY', () => {
+    // Use noon to avoid timezone shift to previous day
+    const result = formatFecha('2026-03-15T12:00:00Z')
+    expect(result).toMatch(/15\/03\/2026/)
+  })
+  it('returns raw string for invalid date', () => {
+    expect(formatFecha('texto-no-fecha')).toBe('texto-no-fecha')
   })
 })

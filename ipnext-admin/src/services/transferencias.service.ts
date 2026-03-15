@@ -1,5 +1,9 @@
 import { api } from '@/lib/api'
-import type { Transferencia, CalendarioDia } from '@/types/transferencia.types'
+import type { Transferencia, CalendarioDia, TransferenciaFrecuencia, TransferenciaTipo } from '@/types/transferencia.types'
+
+export function deriveTipo(frecuencia: TransferenciaFrecuencia | undefined): TransferenciaTipo {
+  return frecuencia && frecuencia !== 'unica' ? 'recurrente' : 'manual'
+}
 
 export const transferenciasService = {
   getAll: () => api.get<Transferencia[]>('/transferencias').then((r) => r.data),

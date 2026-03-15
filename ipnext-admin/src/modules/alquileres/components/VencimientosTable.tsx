@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/Badge'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { AlertTriangle, Clock, XCircle, Calendar } from 'lucide-react'
 import type { VencimientoAlquiler } from '@/types/alquiler.types'
+import { formatFecha } from '@/lib/formatters'
 
 function estadoBadge(estado: VencimientoAlquiler['estado']) {
   if (estado === 'vencido') return <Badge variant="danger">Vencido</Badge>
@@ -39,7 +40,7 @@ export function VencimientosTable({ vencimientos }: { vencimientos: VencimientoA
                 <td className="px-4 py-3 font-medium">{v.inmueble}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{v.propietario}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{v.fechaInicio}</td>
-                <td className={`px-4 py-3 font-medium ${v.diasRestantes < 0 ? 'text-[#E42313]' : v.diasRestantes <= 60 ? 'text-yellow-600' : 'text-[#7A7A7A]'}`}>{v.fechaVencimiento}</td>
+                <td className={`px-4 py-3 font-medium ${v.diasRestantes < 0 ? 'text-[#E42313]' : v.diasRestantes <= 60 ? 'text-yellow-600' : 'text-[#7A7A7A]'}`}>{formatFecha(v.fechaVencimiento)}</td>
                 <td className={`px-4 py-3 font-semibold ${v.diasRestantes < 0 ? 'text-[#E42313]' : ''}`}>{v.diasRestantes < 0 ? `${v.diasRestantes}` : `+${v.diasRestantes}`}</td>
                 <td className="px-4 py-3">{estadoBadge(v.estado)}</td>
               </tr>

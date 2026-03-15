@@ -2,9 +2,9 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Settings } from 'lucide-react'
 import type { Transferencia, TransferenciaEstado } from '@/types/transferencia.types'
-import { formatARS } from '@/lib/formatters'
+import { formatARS, formatFecha } from '@/lib/formatters'
 
-function estadoBadge(estado: TransferenciaEstado) {
+function estadoBadge(estado: TransferenciaEstado | undefined) {
   const map: Record<TransferenciaEstado, { variant: 'success' | 'warning' | 'danger' | 'neutral' | 'info'; label: string }> = {
     pendiente: { variant: 'warning', label: 'PENDIENTE' },
     pagado: { variant: 'success', label: 'PAGADO' },
@@ -12,8 +12,8 @@ function estadoBadge(estado: TransferenciaEstado) {
     programado: { variant: 'success', label: 'PROGRAMADO' },
     en_proceso: { variant: 'info', label: 'EN PROCESO' },
   }
-  const { variant, label } = map[estado]
-  return <Badge variant={variant}>{label}</Badge>
+  const badge = (estado ? map[estado] : null) ?? { variant: 'neutral' as const, label: estado ?? '—' }
+  return <Badge variant={badge.variant}>{badge.label}</Badge>
 }
 
 interface Props {
@@ -42,8 +42,8 @@ export function RecurrentesTable({ data }: Props) {
               <td className="px-4 py-3 font-medium">{t.beneficiario}</td>
               <td className="px-4 py-3"><Badge variant="neutral">{t.categoria}</Badge></td>
               <td className="px-4 py-3 text-[#7A7A7A] capitalize">{t.frecuencia}</td>
-              <td className="px-4 py-3 text-[#7A7A7A]">{t.fechaProximoPago}</td>
-              <td className="px-4 py-3 text-[#7A7A7A]">{t.fechaProximoPago}</td>
+              <td className="px-4 py-3 text-[#7A7A7A]">{formatFecha(t.fechaProximoPago)}</td>
+              <td className="px-4 py-3 text-[#7A7A7A]">{formatFecha(t.fechaProximoPago)}</td>
               <td className="px-4 py-3 font-semibold">${formatARS(t.monto)}</td>
               <td className="px-4 py-3">{estadoBadge(t.estado)}</td>
               <td className="px-4 py-3">

@@ -18,7 +18,7 @@ interface Props {
 export function FlujoCajaTable({ flujo, cuentas }: Props) {
   const safeFlujo = Array.isArray(flujo) ? flujo : []
   const safeCuentas = Array.isArray(cuentas) ? cuentas : []
-  const saldoTotal = safeCuentas.filter((c) => c.estado === 'activo').reduce((a, c) => a + c.saldo, 0)
+  const saldoTotal = safeCuentas.filter((c) => c.activa === true).reduce((a, c) => a + c.saldoActual, 0)
 
   return (
     <div>
@@ -31,11 +31,11 @@ export function FlujoCajaTable({ flujo, cuentas }: Props) {
       </div>
 
       <div className="grid grid-cols-3 gap-4 mb-6">
-        {safeCuentas.filter((c) => c.estado === 'activo').map((c) => (
+        {safeCuentas.filter((c) => c.activa === true).map((c) => (
           <div key={c.id} className="border border-[#E8E8E8] rounded-xl p-4">
             <p className="font-semibold text-sm text-[#0D0D0D]">{c.banco}</p>
             <p className="text-xs text-[#7A7A7A] mb-2">{c.tipoCuenta}</p>
-            <p className="text-2xl font-bold text-[#0D0D0D]">${formatARS(c.saldo)}</p>
+            <p className="text-2xl font-bold text-[#0D0D0D]">${formatARS(c.saldoActual)}</p>
           </div>
         ))}
       </div>

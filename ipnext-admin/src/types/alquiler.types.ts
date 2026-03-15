@@ -7,7 +7,7 @@ export interface Inmueble {
   direccion: string
   propietario: string
   uso: string
-  alquilerMes: number
+  alquilerMensual: number
   proximoAjuste: string
   cbu: string
   estado: AlquilerEstado

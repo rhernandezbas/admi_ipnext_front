@@ -39,7 +39,7 @@ export const proveedoresMock: Proveedor[] = [
 
 export const contratosMock: Contrato[] = [
   { id: '1', codigo: 'CTR-2024-001', proveedor: 'Tech Solutions S.A.', vigenciaDesde: '2024-01-01', vigenciaHasta: '2026-12-31', montoAnual: 1440000, renovacion: '2026-11-01', estado: 'activo' },
-  { id: '2', codigo: 'CTR-2024-002', proveedor: 'Seguridad Max S.R.L.', vigenciaDesde: '2024-03-01', vigenciaHasta: '2026-04-01', montoAnual: 420000, renovacion: '2026-03-01', estado: 'proximo_vencer' },
+  { id: '2', codigo: 'CTR-2024-002', proveedor: 'Seguridad Max S.R.L.', vigenciaDesde: '2024-03-01', vigenciaHasta: '2026-04-01', montoAnual: 420000, renovacion: '2026-03-01', estado: 'proximo_a_vencer' },
   { id: '3', codigo: 'CTR-2023-005', proveedor: 'Limpieza Total', vigenciaDesde: '2023-06-01', vigenciaHasta: '2025-06-01', montoAnual: 180000, renovacion: '2025-05-01', estado: 'vencido' },
   { id: '4', codigo: 'CTR-2026-001', proveedor: 'Proveedor Nuevo', vigenciaDesde: '2026-03-01', vigenciaHasta: '2027-03-01', montoAnual: 240000, renovacion: '2027-02-01', estado: 'en_proceso' },
 ]

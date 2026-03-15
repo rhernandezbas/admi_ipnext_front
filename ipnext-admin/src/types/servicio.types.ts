@@ -6,7 +6,7 @@ export interface Servicio {
   nombre: string
   proveedor: string
   extra: string
-  montoMensual: number
+  costoMensual: number
   vtoFactura?: string
   renovacion?: string
   vigencia?: string

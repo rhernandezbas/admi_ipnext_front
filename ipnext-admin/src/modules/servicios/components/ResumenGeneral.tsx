@@ -32,7 +32,7 @@ export function ResumenGeneral({ servicios, resumen }: Props) {
       <div className="grid grid-cols-2 gap-4">
         {categorias.map((cat) => {
           const items = safeServicios.filter((s) => s.categoria === cat)
-          const total = items.reduce((a, s) => a + s.montoMensual, 0)
+          const total = items.reduce((a, s) => a + s.costoMensual, 0)
           return (
             <div key={cat} className="border border-[#E8E8E8] rounded-xl p-4">
               <div className="flex justify-between items-start mb-3">
@@ -44,7 +44,7 @@ export function ResumenGeneral({ servicios, resumen }: Props) {
                   <div key={s.id} className="flex justify-between items-center text-sm">
                     <span className="text-[#7A7A7A] truncate flex-1">{s.nombre}</span>
                     <div className="flex items-center gap-2 ml-2">
-                      <span className="font-medium">${formatARS(s.montoMensual)}</span>
+                      <span className="font-medium">${formatARS(s.costoMensual)}</span>
                       {s.estado === 'proximo_vencer' && <Badge variant="warning">!</Badge>}
                     </div>
                   </div>

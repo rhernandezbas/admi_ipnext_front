@@ -61,7 +61,7 @@ export function CalendarioView({ dias }: Props) {
               </span>
               <div className="mt-1 flex flex-col gap-0.5">
                 {diaData?.pagos.map((p) => (
-                  <div key={p.id} className={`text-xs px-1.5 py-0.5 rounded truncate ${estadoChipColor[p.estado]}`}>
+                  <div key={p.id} className={`text-xs px-1.5 py-0.5 rounded truncate ${estadoChipColor[p.estado] ?? 'bg-gray-100 text-gray-600'}`}>
                     {p.beneficiario} ${formatARS(p.monto)}
                   </div>
                 ))}
