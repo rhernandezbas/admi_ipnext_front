@@ -3,8 +3,8 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-COPY ipnext-admin/package*.json ./
-RUN npm config set registry https://registry.npmjs.org && npm ci
+COPY ipnext-admin/package.json ./
+RUN npm install --registry https://registry.npmjs.org
 
 COPY ipnext-admin/ .
 RUN npm run build
