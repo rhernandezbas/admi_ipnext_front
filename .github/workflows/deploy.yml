@@ -28,7 +28,7 @@ jobs:
             --name ipnext-admin \
             --restart unless-stopped \
             -p 8765:8765 \
-            --network administracion-backend_default \
+            --network admi_ipnext_back_default \
             ipnext-admin:latest
 
       - name: Clean up old images
