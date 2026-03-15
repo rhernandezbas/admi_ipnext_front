@@ -8,7 +8,7 @@ import { FlujoCajaTable } from './components/FlujoCajaTable'
 import { CuentasBancariasTable } from './components/CuentasBancariasTable'
 import { ConciliacionTable } from './components/ConciliacionTable'
 import { ProyeccionesTable } from './components/ProyeccionesTable'
-import { flujoCajaMock, cuentasBancariasMock, conciliacionMock, proyeccionesMock } from '@/mocks/tesoreria.mock'
+import { useFlujoCaja, useCuentasBancarias, useConciliacion, useProyecciones } from '@/hooks/useTesoreria'
 
 const tabs = [
   { id: 'flujo', label: 'Flujo de Caja' },
@@ -19,6 +19,13 @@ const tabs = [
 
 export default function TesoreriaPage() {
   const [activeTab, setActiveTab] = useState('flujo')
+  const flujoCajaQuery = useFlujoCaja()
+  const cuentasQuery = useCuentasBancarias()
+  const conciliacionQuery = useConciliacion()
+  const proyeccionesQuery = useProyecciones()
+
+  const loading = <div className="text-sm text-[#7A7A7A] py-4">Cargando…</div>
+  const error = <div className="text-sm text-red-500 py-4">Error al cargar datos</div>
 
   return (
     <div>
@@ -37,10 +44,26 @@ export default function TesoreriaPage() {
           <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
         </div>
         <div className="p-6">
-          {activeTab === 'flujo' && <FlujoCajaTable flujo={flujoCajaMock} cuentas={cuentasBancariasMock} />}
-          {activeTab === 'cuentas' && <CuentasBancariasTable cuentas={cuentasBancariasMock} />}
-          {activeTab === 'conciliacion' && <ConciliacionTable movimientos={conciliacionMock} />}
-          {activeTab === 'proyecciones' && <ProyeccionesTable proyecciones={proyeccionesMock} />}
+          {activeTab === 'flujo' && (
+            flujoCajaQuery.isLoading || cuentasQuery.isLoading ? loading :
+            flujoCajaQuery.isError || cuentasQuery.isError ? error :
+            <FlujoCajaTable flujo={flujoCajaQuery.data ?? []} cuentas={cuentasQuery.data ?? []} />
+          )}
+          {activeTab === 'cuentas' && (
+            cuentasQuery.isLoading ? loading :
+            cuentasQuery.isError ? error :
+            <CuentasBancariasTable cuentas={cuentasQuery.data ?? []} />
+          )}
+          {activeTab === 'conciliacion' && (
+            conciliacionQuery.isLoading ? loading :
+            conciliacionQuery.isError ? error :
+            <ConciliacionTable movimientos={conciliacionQuery.data ?? []} />
+          )}
+          {activeTab === 'proyecciones' && (
+            proyeccionesQuery.isLoading ? loading :
+            proyeccionesQuery.isError ? error :
+            <ProyeccionesTable proyecciones={proyeccionesQuery.data ?? []} />
+          )}
         </div>
       </Card>
     </div>

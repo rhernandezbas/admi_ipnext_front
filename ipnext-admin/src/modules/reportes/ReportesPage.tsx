@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/Card'
 import { Tabs } from '@/components/ui/Tabs'
 import { InformeItem } from './components/InformeItem'
 import { ReportePreview } from './components/ReportePreview'
-import { informesMock, previewsMock } from '@/mocks/reportes.mock'
+import { useReportes } from '@/hooks/useReportes'
 
 const tabs = [
   { id: 'financiero', label: 'Financiero' },
@@ -16,10 +16,11 @@ const tabs = [
 
 export default function ReportesPage() {
   const [activeTab, setActiveTab] = useState('financiero')
-  const [selectedId, setSelectedId] = useState<string | null>('1')
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const reportesQuery = useReportes()
 
-  const informes = informesMock[activeTab] ?? []
-  const preview = selectedId ? previewsMock[selectedId] : null
+  const allReportes = reportesQuery.data ?? {}
+  const informes = allReportes[activeTab] ?? []
 
   return (
     <div>
@@ -30,6 +31,12 @@ export default function ReportesPage() {
         </div>
         <div className="flex gap-0 min-h-96">
           <div className="w-72 flex-shrink-0 border-r border-[#E8E8E8] p-4 flex flex-col gap-3">
+            {reportesQuery.isLoading && (
+              <div className="text-sm text-[#7A7A7A]">Cargando…</div>
+            )}
+            {reportesQuery.isError && (
+              <div className="text-sm text-red-500">Error al cargar reportes</div>
+            )}
             {informes.map((inf) => (
               <InformeItem
                 key={inf.id}
@@ -40,8 +47,8 @@ export default function ReportesPage() {
             ))}
           </div>
           <div className="flex-1 p-6">
-            {preview ? (
-              <ReportePreview data={preview} />
+            {selectedId ? (
+              <ReportePreview data={{ titulo: informes.find((i) => i.id === selectedId)?.nombre ?? '', kpis: [], chartData: [] }} />
             ) : (
               <div className="flex items-center justify-center h-full text-[#7A7A7A]">
                 <p>Seleccioná un informe para ver la vista previa</p>

@@ -8,12 +8,16 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const { login } = useAuthStore()
   const navigate = useNavigate()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const ok = login(email, password)
+    setLoading(true)
+    setError('')
+    const ok = await login(email, password)
+    setLoading(false)
     if (ok) navigate('/')
     else setError('Credenciales inválidas')
   }
@@ -31,7 +35,7 @@ export default function LoginPage() {
           <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="admin@ipnext.com" />
           <Input label="Contraseña" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
           {error && <p className="text-sm text-red-500">{error}</p>}
-          <Button type="submit" className="w-full justify-center mt-2">Ingresar</Button>
+          <Button type="submit" className="w-full justify-center mt-2" disabled={loading}>{loading ? 'Ingresando…' : 'Ingresar'}</Button>
         </form>
       </div>
     </div>

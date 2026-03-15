@@ -2,7 +2,7 @@ import { useAuthStore } from '@/store/authStore'
 
 export function usePermiso() {
   const { user } = useAuthStore()
-  const isAdmin = user?.role === 'admin'
+  const isAdmin = user?.rol === 'admin'
 
   return {
     canWrite: isAdmin,

@@ -56,10 +56,10 @@ export function Sidebar() {
       {/* Footer */}
       <div className="px-4 py-4 border-t border-[#E8E8E8]">
         <div className="flex items-center gap-3">
-          <Avatar name={user?.name ?? 'U'} size="sm" />
+          <Avatar name={user?.nombre ?? 'U'} size="sm" />
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-[#0D0D0D] truncate">{user?.name}</p>
-            <p className="text-xs text-[#7A7A7A] capitalize">{user?.role}</p>
+            <p className="text-sm font-medium text-[#0D0D0D] truncate">{user?.nombre}</p>
+            <p className="text-xs text-[#7A7A7A] capitalize">{user?.rol}</p>
           </div>
           <button onClick={logout} className="text-[#7A7A7A] hover:text-[#E42313] cursor-pointer">
             <LogOut size={16} />

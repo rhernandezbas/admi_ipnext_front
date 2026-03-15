@@ -1,36 +1,74 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { authService } from '@/services/auth.service'
 
-interface User {
+export interface User {
   id: string
-  name: string
+  nombre: string
   email: string
-  role: 'admin' | 'viewer'
-  avatar?: string
+  rol: string
+  permisos: string[]
 }
 
 interface AuthState {
   user: User | null
+  token: string | null
   isAuthenticated: boolean
-  login: (email: string, password: string) => boolean
-  logout: () => void
+  login: (email: string, password: string) => Promise<boolean>
+  logout: () => Promise<void>
+  setToken: (token: string) => void
 }
 
-const MOCK_USERS: User[] = [
-  { id: '1', name: 'Admin IPNEXT', email: 'admin@ipnext.com', role: 'admin' },
-  { id: '2', name: 'Consultor', email: 'viewer@ipnext.com', role: 'viewer' },
-]
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      token: null,
+      isAuthenticated: false,
 
-export const useAuthStore = create<AuthState>((set) => ({
-  user: MOCK_USERS[0], // Auto-login for dev
-  isAuthenticated: true,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  login: (email: string, _password: string) => {
-    const user = MOCK_USERS.find((u) => u.email === email)
-    if (user) {
-      set({ user, isAuthenticated: true })
-      return true
-    }
-    return false
-  },
-  logout: () => set({ user: null, isAuthenticated: false }),
-}))
+      setToken: (token: string) => {
+        localStorage.setItem('auth_token', token)
+        set({ token })
+      },
+
+      login: async (email: string, password: string) => {
+        try {
+          const response = await authService.login({ email, password })
+          localStorage.setItem('auth_token', response.token)
+          set({
+            user: response.usuario,
+            token: response.token,
+            isAuthenticated: true,
+          })
+          return true
+        } catch {
+          return false
+        }
+      },
+
+      logout: async () => {
+        try {
+          await authService.logout()
+        } catch {
+          // ignore logout errors
+        } finally {
+          localStorage.removeItem('auth_token')
+          set({ user: null, token: null, isAuthenticated: false })
+        }
+      },
+    }),
+    {
+      name: 'auth-storage',
+      partialize: (state) => ({
+        user: state.user,
+        token: state.token,
+        isAuthenticated: state.isAuthenticated,
+      }),
+      onRehydrateStorage: () => (state) => {
+        if (state?.token) {
+          localStorage.setItem('auth_token', state.token)
+        }
+      },
+    },
+  ),
+)

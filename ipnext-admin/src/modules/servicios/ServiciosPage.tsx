@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/Card'
 import { Tabs } from '@/components/ui/Tabs'
 import { ResumenGeneral } from './components/ResumenGeneral'
 import { ServiciosTable } from './components/ServiciosTable'
-import { serviciosMock, resumenServiciosMock } from '@/mocks/servicios.mock'
+import { useServicios } from '@/hooks/useServicios'
 import type { Servicio } from '@/types/servicio.types'
 
 const tabs = [
@@ -62,10 +62,41 @@ const softwareCols = [
 
 export default function ServiciosPage() {
   const [activeTab, setActiveTab] = useState('resumen')
-  const internet = serviciosMock.filter((s) => s.categoria === 'internet')
-  const energia = serviciosMock.filter((s) => s.categoria === 'energia')
-  const seguridad = serviciosMock.filter((s) => s.categoria === 'seguridad')
-  const software = serviciosMock.filter((s) => s.categoria === 'software')
+  const serviciosQuery = useServicios()
+  const allServicios = serviciosQuery.data ?? []
+
+  const internet = allServicios.filter((s) => s.categoria === 'internet')
+  const energia = allServicios.filter((s) => s.categoria === 'energia')
+  const seguridad = allServicios.filter((s) => s.categoria === 'seguridad')
+  const software = allServicios.filter((s) => s.categoria === 'software')
+
+  const resumen = {
+    gastoTotal: allServicios.reduce((a, s) => a + s.montoMensual, 0),
+    serviciosActivos: allServicios.filter((s) => s.estado === 'activo').length,
+    facturasProximas: allServicios.filter((s) => s.estado === 'proximo_vencer').length,
+    renovacionesProximas: allServicios.filter((s) => s.renovacion !== undefined).length,
+  }
+
+  const loading = <div className="text-sm text-[#7A7A7A] py-4">Cargando…</div>
+  const error = <div className="text-sm text-red-500 py-4">Error al cargar servicios</div>
+
+  if (serviciosQuery.isLoading) {
+    return (
+      <div>
+        <PageHeader title="Servicios & Utilities" subtitle="Control de servicios operativos recurrentes" />
+        {loading}
+      </div>
+    )
+  }
+
+  if (serviciosQuery.isError) {
+    return (
+      <div>
+        <PageHeader title="Servicios & Utilities" subtitle="Control de servicios operativos recurrentes" />
+        {error}
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -75,7 +106,7 @@ export default function ServiciosPage() {
           <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
         </div>
         <div className="p-6">
-          {activeTab === 'resumen' && <ResumenGeneral servicios={serviciosMock} resumen={resumenServiciosMock} />}
+          {activeTab === 'resumen' && <ResumenGeneral servicios={allServicios} resumen={resumen} />}
           {activeTab === 'internet' && <ServiciosTable servicios={internet} kpis={makeKpis(internet, 'Gasto del mes')} columns={internetCols} />}
           {activeTab === 'energia' && <ServiciosTable servicios={energia} kpis={makeKpis(energia, 'Gasto del mes')} columns={energiaCols} />}
           {activeTab === 'seguridad' && <ServiciosTable servicios={seguridad} kpis={[

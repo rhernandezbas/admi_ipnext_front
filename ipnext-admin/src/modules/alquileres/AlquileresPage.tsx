@@ -8,7 +8,7 @@ import { InmueblesTable } from './components/InmueblesTable'
 import { ContratosAlquilerTable } from './components/ContratosAlquilerTable'
 import { PagosRecibosTable } from './components/PagosRecibosTable'
 import { VencimientosTable } from './components/VencimientosTable'
-import { inmueblesMock, contratosAlquilerMock, pagosAlquilerMock, vencimientosMock } from '@/mocks/alquileres.mock'
+import { useAlquileres, useContratosAlquiler, usePagosAlquiler, useVencimientos } from '@/hooks/useAlquileres'
 
 const tabs = [
   { id: 'inmuebles', label: 'Inmuebles' },
@@ -19,6 +19,13 @@ const tabs = [
 
 export default function AlquileresPage() {
   const [activeTab, setActiveTab] = useState('inmuebles')
+  const inmueblesQuery = useAlquileres()
+  const contratosQuery = useContratosAlquiler()
+  const pagosQuery = usePagosAlquiler()
+  const vencimientosQuery = useVencimientos()
+
+  const loading = <div className="text-sm text-[#7A7A7A] py-4">Cargando…</div>
+  const error = <div className="text-sm text-red-500 py-4">Error al cargar datos</div>
 
   return (
     <div>
@@ -37,10 +44,26 @@ export default function AlquileresPage() {
           <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
         </div>
         <div className="p-6">
-          {activeTab === 'inmuebles' && <InmueblesTable inmuebles={inmueblesMock} />}
-          {activeTab === 'contratos' && <ContratosAlquilerTable contratos={contratosAlquilerMock} />}
-          {activeTab === 'pagos' && <PagosRecibosTable pagos={pagosAlquilerMock} />}
-          {activeTab === 'vencimientos' && <VencimientosTable vencimientos={vencimientosMock} />}
+          {activeTab === 'inmuebles' && (
+            inmueblesQuery.isLoading ? loading :
+            inmueblesQuery.isError ? error :
+            <InmueblesTable inmuebles={inmueblesQuery.data ?? []} />
+          )}
+          {activeTab === 'contratos' && (
+            contratosQuery.isLoading ? loading :
+            contratosQuery.isError ? error :
+            <ContratosAlquilerTable contratos={contratosQuery.data ?? []} />
+          )}
+          {activeTab === 'pagos' && (
+            pagosQuery.isLoading ? loading :
+            pagosQuery.isError ? error :
+            <PagosRecibosTable pagos={pagosQuery.data ?? []} />
+          )}
+          {activeTab === 'vencimientos' && (
+            vencimientosQuery.isLoading ? loading :
+            vencimientosQuery.isError ? error :
+            <VencimientosTable vencimientos={vencimientosQuery.data ?? []} />
+          )}
         </div>
       </Card>
     </div>

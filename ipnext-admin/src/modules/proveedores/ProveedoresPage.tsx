@@ -8,7 +8,7 @@ import { ProveedoresTable } from './components/ProveedoresTable'
 import { ProveedorDetailPanel } from './components/ProveedorDetailPanel'
 import { ContratosTable } from './components/ContratosTable'
 import { RankingChart } from './components/RankingChart'
-import { proveedoresMock, contratosMock, rankingMock } from '@/mocks/proveedores.mock'
+import { useProveedores, useContratos, useRanking } from '@/hooks/useProveedores'
 
 const tabs = [
   { id: 'directorio', label: 'Directorio' },
@@ -19,8 +19,15 @@ const tabs = [
 export default function ProveedoresPage() {
   const [activeTab, setActiveTab] = useState('directorio')
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const proveedoresQuery = useProveedores()
+  const contratosQuery = useContratos()
+  const rankingQuery = useRanking()
 
-  const selectedProveedor = proveedoresMock.find((p) => p.id === selectedId) ?? null
+  const proveedores = proveedoresQuery.data ?? []
+  const selectedProveedor = proveedores.find((p) => p.id === selectedId) ?? null
+
+  const loading = <div className="text-sm text-[#7A7A7A] py-4">Cargando…</div>
+  const error = <div className="text-sm text-red-500 py-4">Error al cargar datos</div>
 
   return (
     <div>
@@ -36,14 +43,24 @@ export default function ProveedoresPage() {
         <div className={`flex ${activeTab === 'directorio' && selectedProveedor ? '' : ''}`}>
           <div className="flex-1 p-6 min-w-0">
             {activeTab === 'directorio' && (
+              proveedoresQuery.isLoading ? loading :
+              proveedoresQuery.isError ? error :
               <ProveedoresTable
-                proveedores={proveedoresMock}
+                proveedores={proveedores}
                 selectedId={selectedId}
                 onSelect={(id) => setSelectedId(selectedId === id ? null : id)}
               />
             )}
-            {activeTab === 'contratos' && <ContratosTable contratos={contratosMock} />}
-            {activeTab === 'ranking' && <RankingChart ranking={rankingMock} />}
+            {activeTab === 'contratos' && (
+              contratosQuery.isLoading ? loading :
+              contratosQuery.isError ? error :
+              <ContratosTable contratos={contratosQuery.data ?? []} />
+            )}
+            {activeTab === 'ranking' && (
+              rankingQuery.isLoading ? loading :
+              rankingQuery.isError ? error :
+              <RankingChart ranking={rankingQuery.data ?? []} />
+            )}
           </div>
           {activeTab === 'directorio' && selectedProveedor && (
             <ProveedorDetailPanel proveedor={selectedProveedor} onClose={() => setSelectedId(null)} />
