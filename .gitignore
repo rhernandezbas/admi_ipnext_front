@@ -1,0 +1,12 @@
+.cliplin
+.idea
+.DS_Store
+
+# Frontend
+ipnext-admin/node_modules
+ipnext-admin/dist
+ipnext-admin/.env
+ipnext-admin/.env.*
+
+# Logs
+*.log

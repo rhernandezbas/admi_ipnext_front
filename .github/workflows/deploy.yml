@@ -1,0 +1,36 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          docker build -t ipnext-admin:latest .
+
+      - name: Stop and remove existing container
+        run: |
+          docker stop ipnext-admin || true
+          docker rm ipnext-admin || true
+
+      - name: Run container
+        run: |
+          docker run -d \
+            --name ipnext-admin \
+            --restart unless-stopped \
+            -p 8765:8765 \
+            --network administracion-backend_default \
+            ipnext-admin:latest
+
+      - name: Clean up old images
+        run: |
+          docker image prune -f
