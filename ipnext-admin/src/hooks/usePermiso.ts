@@ -7,6 +7,7 @@ export function usePermiso(modulo: Modulo, nivel?: 'lectura' | 'escritura'): boo
   const { user } = useAuthStore()
   if (!user) return false
   if (user.rol === 'admin') return true
+  if (!user.permisos) return false
   const p = user.permisos[modulo]
   if (nivel === 'escritura') return p === 'escritura'
   if (nivel === 'lectura') return p === 'lectura' || p === 'escritura'
