@@ -31,7 +31,7 @@ export function ResumenGeneral({ servicios, resumen }: Props) {
 
       <div className="grid grid-cols-2 gap-4">
         {categorias.map((cat) => {
-          const items = safeServicios.filter((s) => s.categoria === cat)
+          const items = safeServicios.filter((s) => s.tipo === cat || (cat === 'internet' && ['hosting', 'otro'].includes(s.tipo)))
           const total = items.reduce((a, s) => a + s.costoMensual, 0)
           return (
             <div key={cat} className="border border-[#E8E8E8] rounded-xl p-4">

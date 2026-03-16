@@ -51,7 +51,7 @@ export default function ServiciosPage() {
   const [servicioEditar, setServicioEditar] = useState<Servicio | null>(null)
   const [servicioEliminar, setServicioEliminar] = useState<Servicio | null>(null)
   const puedeEscribir = usePermiso('servicios', 'escritura')
-  const puedeAdmin = usePermiso('servicios', 'admin_only')
+  const puedeAdmin = usePermiso('servicios', 'escritura')
   const serviciosQuery = useServicios()
   const allServicios = serviciosQuery.data ?? []
   const qc = useQueryClient()

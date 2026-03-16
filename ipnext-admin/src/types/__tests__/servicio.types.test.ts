@@ -7,10 +7,9 @@ describe('Servicio type (GAP-H)', () => {
       id: '1',
       nombre: 'Internet',
       proveedor: 'Telecom',
-      extra: '',
       costoMensual: 15000,
       estado: 'activo',
-      categoria: 'internet',
+      tipo: 'internet',
     }
     expect(servicio.costoMensual).toBe(15000)
     // @ts-expect-error montoMensual no existe
