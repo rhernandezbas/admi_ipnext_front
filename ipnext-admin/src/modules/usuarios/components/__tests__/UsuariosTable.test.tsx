@@ -5,11 +5,11 @@ import type { Usuario } from '@/types/usuario.types'
 
 const usuarios: Usuario[] = [
   {
-    ID: '1',
-    Nombre: 'Juan Pérez',
-    Email: 'juan@test.com',
-    Rol: 'sub-usuario',
-    Permisos: {
+    id: '1',
+    nombre: 'Juan Pérez',
+    email: 'juan@test.com',
+    rol: 'sub-usuario',
+    permisos: {
       dashboard: true,
       transferencias: 'escritura',
       nominas: 'lectura',
@@ -19,17 +19,17 @@ const usuarios: Usuario[] = [
       tesoreria: 'ninguno',
       reportes: 'ninguno',
     },
-    Avatar: null,
-    Activo: true,
-    CreatedAt: '2024-01-01T00:00:00Z',
-    UpdatedAt: '2024-01-01T00:00:00Z',
+    avatar: null,
+    activo: true,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z',
   },
   {
-    ID: '2',
-    Nombre: 'Ana López',
-    Email: 'ana@test.com',
-    Rol: 'sub-usuario',
-    Permisos: {
+    id: '2',
+    nombre: 'Ana López',
+    email: 'ana@test.com',
+    rol: 'sub-usuario',
+    permisos: {
       dashboard: false,
       transferencias: 'ninguno',
       nominas: 'ninguno',
@@ -39,10 +39,10 @@ const usuarios: Usuario[] = [
       tesoreria: 'ninguno',
       reportes: 'ninguno',
     },
-    Avatar: null,
-    Activo: false,
-    CreatedAt: '2024-01-01T00:00:00Z',
-    UpdatedAt: '2024-01-01T00:00:00Z',
+    avatar: null,
+    activo: false,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z',
   },
 ]
 
@@ -84,8 +84,8 @@ describe('UsuariosTable', () => {
     expect(screen.getByText('Inactivo')).toBeDefined()
   })
 
-  it('does not crash with no permisos', () => {
-    const userNoPerm: Usuario = { ...usuarios[0], Permisos: { dashboard: false, transferencias: 'ninguno', nominas: 'ninguno', proveedores: 'ninguno', servicios: 'ninguno', alquileres: 'ninguno', tesoreria: 'ninguno', reportes: 'ninguno' } }
+  it('does not crash with empty permisos', () => {
+    const userNoPerm: Usuario = { ...usuarios[0], permisos: { dashboard: false, transferencias: 'ninguno', nominas: 'ninguno', proveedores: 'ninguno', servicios: 'ninguno', alquileres: 'ninguno', tesoreria: 'ninguno', reportes: 'ninguno' } }
     expect(() =>
       render(
         <UsuariosTable

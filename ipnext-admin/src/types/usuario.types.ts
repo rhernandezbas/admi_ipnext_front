@@ -12,15 +12,15 @@ export interface Permisos {
 }
 
 export interface Usuario {
-  ID: string
-  Nombre: string
-  Email: string
-  Rol: 'admin' | 'sub-usuario'
-  Permisos: Permisos
-  Avatar: string | null
-  Activo: boolean
-  CreatedAt: string
-  UpdatedAt: string
+  id: string
+  nombre: string
+  email: string
+  rol: 'admin' | 'sub-usuario'
+  permisos: Permisos
+  avatar: string | null
+  activo: boolean
+  createdAt: string
+  updatedAt: string
 }
 
 export interface NuevoUsuarioForm {

@@ -20,7 +20,7 @@ export function UsuariosPage() {
   })
 
   const toggleActivo = useMutation({
-    mutationFn: (u: Usuario) => usuariosService.update(u.ID, { activo: !u.Activo }),
+    mutationFn: (u: Usuario) => usuariosService.update(u.id, { activo: !u.activo }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['usuarios'] })
       toast.success('Usuario actualizado')
@@ -61,8 +61,8 @@ export function UsuariosPage() {
         <CambiarClaveModal
           open={true}
           onClose={() => setUsuarioClave(null)}
-          usuarioId={usuarioClave.ID}
-          nombre={usuarioClave.Nombre}
+          usuarioId={usuarioClave.id}
+          nombre={usuarioClave.nombre}
         />
       )}
     </div>

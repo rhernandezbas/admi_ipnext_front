@@ -26,7 +26,7 @@ export function EditarUsuarioModal({ open, onClose, usuario }: Props) {
   const [nombre, setNombre] = useState('')
   const [email, setEmail] = useState('')
   const [activo, setActivo] = useState(true)
-  const [permisos, setPermisos] = useState<Permisos>(usuario?.Permisos ?? {
+  const [permisos, setPermisos] = useState<Permisos>(usuario?.permisos ?? {
     dashboard: false, transferencias: 'ninguno', nominas: 'ninguno',
     proveedores: 'ninguno', servicios: 'ninguno', alquileres: 'ninguno',
     tesoreria: 'ninguno', reportes: 'ninguno',
@@ -34,15 +34,15 @@ export function EditarUsuarioModal({ open, onClose, usuario }: Props) {
 
   useEffect(() => {
     if (usuario) {
-      setNombre(usuario.Nombre)
-      setEmail(usuario.Email)
-      setActivo(usuario.Activo)
-      setPermisos(usuario.Permisos)
+      setNombre(usuario.nombre)
+      setEmail(usuario.email)
+      setActivo(usuario.activo)
+      setPermisos(usuario.permisos)
     }
   }, [usuario])
 
   const mutation = useMutation({
-    mutationFn: () => usuariosService.update(usuario!.ID, { nombre, email, activo, permisos }),
+    mutationFn: () => usuariosService.update(usuario!.id, { nombre, email, activo, permisos }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['usuarios'] })
       toast.success('Usuario actualizado')

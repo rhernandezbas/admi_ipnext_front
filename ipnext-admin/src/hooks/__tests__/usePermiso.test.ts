@@ -5,11 +5,11 @@ import { usePermiso } from '../usePermiso'
 import type { Usuario } from '@/types/usuario.types'
 
 const adminUser: Usuario = {
-  ID: '1',
-  Nombre: 'Admin',
-  Email: 'admin@test.com',
-  Rol: 'admin',
-  Permisos: {
+  id: '1',
+  nombre: 'Admin',
+  email: 'admin@test.com',
+  rol: 'admin',
+  permisos: {
     dashboard: false,
     transferencias: 'ninguno',
     nominas: 'ninguno',
@@ -19,18 +19,18 @@ const adminUser: Usuario = {
     tesoreria: 'ninguno',
     reportes: 'ninguno',
   },
-  Avatar: null,
-  Activo: true,
-  CreatedAt: '',
-  UpdatedAt: '',
+  avatar: null,
+  activo: true,
+  createdAt: '',
+  updatedAt: '',
 }
 
 const subUser: Usuario = {
   ...adminUser,
-  ID: '2',
-  Nombre: 'Sub',
-  Rol: 'sub-usuario',
-  Permisos: {
+  id: '2',
+  nombre: 'Sub',
+  rol: 'sub-usuario',
+  permisos: {
     dashboard: true,
     transferencias: 'lectura',
     nominas: 'escritura',
@@ -40,26 +40,6 @@ const subUser: Usuario = {
     tesoreria: 'lectura',
     reportes: 'ninguno',
   },
-}
-
-// Map Usuario (PascalCase backend) to User shape (camelCase) used by authStore
-function toUser(u: Usuario) {
-  return {
-    id: u.ID,
-    nombre: u.Nombre,
-    email: u.Email,
-    rol: u.Rol,
-    permisos: {
-      dashboard: u.Permisos.dashboard,
-      transferencias: u.Permisos.transferencias,
-      nominas: u.Permisos.nominas,
-      proveedores: u.Permisos.proveedores,
-      servicios: u.Permisos.servicios,
-      alquileres: u.Permisos.alquileres,
-      tesoreria: u.Permisos.tesoreria,
-      reportes: u.Permisos.reportes,
-    },
-  }
 }
 
 describe('usePermiso', () => {
@@ -73,37 +53,37 @@ describe('usePermiso', () => {
   })
 
   it('admin always returns true', () => {
-    useAuthStore.setState({ user: toUser(adminUser), isAuthenticated: true })
+    useAuthStore.setState({ user: adminUser, isAuthenticated: true })
     const { result } = renderHook(() => usePermiso('alquileres', 'escritura'))
     expect(result.current).toBe(true)
   })
 
   it('sub-usuario with escritura can write', () => {
-    useAuthStore.setState({ user: toUser(subUser), isAuthenticated: true })
+    useAuthStore.setState({ user: subUser, isAuthenticated: true })
     const { result } = renderHook(() => usePermiso('alquileres', 'escritura'))
     expect(result.current).toBe(true)
   })
 
   it('sub-usuario with lectura cannot write', () => {
-    useAuthStore.setState({ user: toUser(subUser), isAuthenticated: true })
+    useAuthStore.setState({ user: subUser, isAuthenticated: true })
     const { result } = renderHook(() => usePermiso('transferencias', 'escritura'))
     expect(result.current).toBe(false)
   })
 
   it('sub-usuario with lectura can read', () => {
-    useAuthStore.setState({ user: toUser(subUser), isAuthenticated: true })
+    useAuthStore.setState({ user: subUser, isAuthenticated: true })
     const { result } = renderHook(() => usePermiso('transferencias', 'lectura'))
     expect(result.current).toBe(true)
   })
 
   it('sub-usuario with ninguno returns false for lectura', () => {
-    useAuthStore.setState({ user: toUser(subUser), isAuthenticated: true })
+    useAuthStore.setState({ user: subUser, isAuthenticated: true })
     const { result } = renderHook(() => usePermiso('proveedores', 'lectura'))
     expect(result.current).toBe(false)
   })
 
   it('sub-usuario with escritura can also read', () => {
-    useAuthStore.setState({ user: toUser(subUser), isAuthenticated: true })
+    useAuthStore.setState({ user: subUser, isAuthenticated: true })
     const { result } = renderHook(() => usePermiso('alquileres', 'lectura'))
     expect(result.current).toBe(true)
   })
