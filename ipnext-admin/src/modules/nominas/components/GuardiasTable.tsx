@@ -21,7 +21,7 @@ export function GuardiasTable({ guardias, empleados = [] }: { guardias: Guardia[
   const safeGuardias = Array.isArray(guardias) ? guardias : []
   const empMap = Object.fromEntries(empleados.map((e) => [e.id, e.nombre]))
 
-  const nombreGuardia = (g: Guardia) => g.empleadoNombre ?? empMap[g.empleadoId] ?? g.empleadoId
+  const nombreGuardia = (g: Guardia) => g.empleadoNombre ?? empMap[g.empleadoId] ?? g.empleadoId ?? ''
 
   const filtradas = useMemo(() => {
     const mesStr = String(mes + 1).padStart(2, '0')
