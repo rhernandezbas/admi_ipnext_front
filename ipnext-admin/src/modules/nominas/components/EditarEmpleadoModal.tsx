@@ -13,7 +13,7 @@ interface Props {
 
 export function EditarEmpleadoModal({ open, onClose, empleado }: Props) {
   const qc = useQueryClient()
-  const [form, setForm] = useState({ nombre: '', puesto: '', area: '', rol: '', sueldoBruto: '', obraSocial: '' })
+  const [form, setForm] = useState({ nombre: '', puesto: '', area: '', rol: '', sueldoBruto: '', obraSocial: '', cargasSocialesPct: '30', cargasSocialesMonto: '' })
 
   useEffect(() => {
     if (empleado) setForm({
@@ -23,6 +23,8 @@ export function EditarEmpleadoModal({ open, onClose, empleado }: Props) {
       rol: empleado.rol,
       sueldoBruto: String(empleado.sueldoBruto),
       obraSocial: empleado.obraSocial,
+      cargasSocialesPct: String(empleado.cargasSocialesPct ?? 30),
+      cargasSocialesMonto: empleado.cargasSocialesMonto != null ? String(empleado.cargasSocialesMonto) : '',
     })
   }, [empleado])
 
@@ -34,6 +36,8 @@ export function EditarEmpleadoModal({ open, onClose, empleado }: Props) {
       rol: form.rol,
       sueldoBruto: Number(form.sueldoBruto),
       obraSocial: form.obraSocial,
+      cargasSocialesPct: Number(form.cargasSocialesPct),
+      cargasSocialesMonto: form.cargasSocialesMonto !== '' ? Number(form.cargasSocialesMonto) : null,
     }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['nominas'] })
@@ -74,6 +78,14 @@ export function EditarEmpleadoModal({ open, onClose, empleado }: Props) {
           <div className="col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">Obra Social</label>
             <input value={form.obraSocial} onChange={(e) => setForm({ ...form, obraSocial: e.target.value })} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Cargas Sociales %</label>
+            <input type="number" min="0" max="100" step="0.01" value={form.cargasSocialesPct} onChange={(e) => setForm({ ...form, cargasSocialesPct: e.target.value })} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Cargas Sociales Monto fijo</label>
+            <input type="number" min="0" value={form.cargasSocialesMonto} onChange={(e) => setForm({ ...form, cargasSocialesMonto: e.target.value })} placeholder="Dejar vacío para usar %" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" />
           </div>
         </div>
         <div className="flex justify-end gap-2 pt-2">

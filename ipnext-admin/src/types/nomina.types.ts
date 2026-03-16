@@ -6,8 +6,16 @@ export interface Empleado {
   rol: string
   sueldoBruto: number
   obraSocial: string
+  cargasSocialesPct: number
+  cargasSocialesMonto: number | null
   fechaIngreso: string
   avatar?: string
+}
+
+/** Retorna el monto efectivo de cargas sociales para un empleado */
+export function cargasSocialesCalculado(e: Empleado): number {
+  if (e.cargasSocialesMonto != null) return e.cargasSocialesMonto
+  return e.sueldoBruto * e.cargasSocialesPct / 100
 }
 
 export interface Guardia {

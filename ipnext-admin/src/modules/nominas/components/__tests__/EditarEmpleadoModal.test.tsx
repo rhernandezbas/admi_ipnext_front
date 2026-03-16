@@ -17,6 +17,8 @@ const empleado: Empleado = {
   rol: 'empleado',
   sueldoBruto: 150000,
   obraSocial: 'OSDE',
+  cargasSocialesPct: 30,
+  cargasSocialesMonto: null,
   fechaIngreso: '2022-01-01',
 }
 

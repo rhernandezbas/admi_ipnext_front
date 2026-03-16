@@ -1,11 +1,11 @@
 import type { Empleado, Guardia, Compensacion } from '@/types/nomina.types'
 
 export const empleadosMock: Empleado[] = [
-  { id: '1', nombre: 'María González', puesto: 'Contadora', area: 'Administración', rol: 'Núcleo', sueldoBruto: 450000, obraSocial: 'OSDE 210', fechaIngreso: '2020-03-01' },
-  { id: '2', nombre: 'Juan Rodríguez', puesto: 'Seguridad', area: 'Operaciones', rol: 'Núcleo', sueldoBruto: 280000, obraSocial: 'Swiss Medical', fechaIngreso: '2019-07-15' },
-  { id: '3', nombre: 'Ana López', puesto: 'Recepcionista', area: 'Administración', rol: 'Dic', sueldoBruto: 220000, obraSocial: 'OSDE 210', fechaIngreso: '2021-01-10' },
-  { id: '4', nombre: 'Carlos Martínez', puesto: 'Mantenimiento', area: 'Operaciones', rol: 'Núcleo', sueldoBruto: 310000, obraSocial: 'Galeno', fechaIngreso: '2018-05-20' },
-  { id: '5', nombre: 'Laura Fernández', puesto: 'Administración', area: 'Administración', rol: 'Dic', sueldoBruto: 250000, obraSocial: 'Swiss Medical', fechaIngreso: '2022-09-01' },
+  { id: '1', nombre: 'María González', puesto: 'Contadora', area: 'Administración', rol: 'Núcleo', sueldoBruto: 450000, obraSocial: 'OSDE 210', cargasSocialesPct: 30, cargasSocialesMonto: null, fechaIngreso: '2020-03-01' },
+  { id: '2', nombre: 'Juan Rodríguez', puesto: 'Seguridad', area: 'Operaciones', rol: 'Núcleo', sueldoBruto: 280000, obraSocial: 'Swiss Medical', cargasSocialesPct: 30, cargasSocialesMonto: null, fechaIngreso: '2019-07-15' },
+  { id: '3', nombre: 'Ana López', puesto: 'Recepcionista', area: 'Administración', rol: 'Dic', sueldoBruto: 220000, obraSocial: 'OSDE 210', cargasSocialesPct: 30, cargasSocialesMonto: null, fechaIngreso: '2021-01-10' },
+  { id: '4', nombre: 'Carlos Martínez', puesto: 'Mantenimiento', area: 'Operaciones', rol: 'Núcleo', sueldoBruto: 310000, obraSocial: 'Galeno', cargasSocialesPct: 30, cargasSocialesMonto: null, fechaIngreso: '2018-05-20' },
+  { id: '5', nombre: 'Laura Fernández', puesto: 'Administración', area: 'Administración', rol: 'Dic', sueldoBruto: 250000, obraSocial: 'Swiss Medical', cargasSocialesPct: 30, cargasSocialesMonto: null, fechaIngreso: '2022-09-01' },
 ]
 
 export const guardiasMock: Guardia[] = [

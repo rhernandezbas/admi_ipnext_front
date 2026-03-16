@@ -19,6 +19,7 @@ import { usePermiso } from '@/hooks/usePermiso'
 import { api } from '@/lib/api'
 import { toast } from '@/lib/toast'
 import type { Empleado } from '@/types/nomina.types'
+import { cargasSocialesCalculado } from '@/types/nomina.types'
 
 const tabs = [
   { id: 'empleados', label: 'Empleados' },
@@ -48,7 +49,7 @@ export default function NominasPage() {
 
   const empleados = empleadosQuery.data ?? []
   const totalBruto = empleados.reduce((acc, e) => acc + e.sueldoBruto, 0)
-  const cargasSociales = Math.round(totalBruto * 0.30)
+  const cargasSociales = empleados.reduce((acc, e) => acc + cargasSocialesCalculado(e), 0)
   const netoAPagar = totalBruto - cargasSociales
   const resumen = { totalBruto, cargasSociales, netoAPagar, empleadosConAumento: 0, liquidacionesPendientes: 0 }
 

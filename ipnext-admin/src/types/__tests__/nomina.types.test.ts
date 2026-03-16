@@ -11,6 +11,8 @@ describe('Empleado type (GAP-4)', () => {
       rol: 'empleado',
       sueldoBruto: 180000,
       obraSocial: 'OSDE',
+      cargasSocialesPct: 30,
+      cargasSocialesMonto: null,
       fechaIngreso: '2024-01-15',
     }
     expect(emp.sueldoBruto).toBe(180000)
@@ -21,7 +23,7 @@ describe('Empleado type (GAP-4)', () => {
   it('NO tiene campo netoMes', () => {
     const emp: Empleado = {
       id: '1', nombre: 'Juan', puesto: 'Dev', area: 'Tech',
-      rol: 'empleado', sueldoBruto: 180000, obraSocial: 'OSDE', fechaIngreso: '2024-01-15',
+      rol: 'empleado', sueldoBruto: 180000, obraSocial: 'OSDE', cargasSocialesPct: 30, cargasSocialesMonto: null, fechaIngreso: '2024-01-15',
     }
     // @ts-expect-error netoMes no existe
     expect((emp as Record<string, unknown>).netoMes).toBeUndefined()
@@ -30,7 +32,7 @@ describe('Empleado type (GAP-4)', () => {
   it('NO tiene campo cargo', () => {
     const emp: Empleado = {
       id: '1', nombre: 'Juan', puesto: 'Dev', area: 'Tech',
-      rol: 'empleado', sueldoBruto: 180000, obraSocial: 'OSDE', fechaIngreso: '2024-01-15',
+      rol: 'empleado', sueldoBruto: 180000, obraSocial: 'OSDE', cargasSocialesPct: 30, cargasSocialesMonto: null, fechaIngreso: '2024-01-15',
     }
     // @ts-expect-error cargo no existe
     expect((emp as Record<string, unknown>).cargo).toBeUndefined()
@@ -40,6 +42,7 @@ describe('Empleado type (GAP-4)', () => {
     const emp: Empleado = {
       id: '1', nombre: 'Juan', puesto: 'Dev', area: 'Tech',
       rol: 'empleado', sueldoBruto: 180000, obraSocial: 'OSDE',
+      cargasSocialesPct: 30, cargasSocialesMonto: null,
       fechaIngreso: '2024-01-15', avatar: 'https://example.com/avatar.png',
     }
     expect(emp.fechaIngreso).toBe('2024-01-15')
