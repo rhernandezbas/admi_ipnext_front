@@ -35,15 +35,13 @@
 
 > ⚠️ Prerequisito: Backend migración + campos en API (TDR-005)
 
-- [ ] Actualizar `Empleado` en `src/types/nomina.types.ts`
-  - Agregar `cargasSocialesPct: number`, `cargasSocialesMonto?: number`, `cargasSocialesCalculado?: number`
-- [ ] Actualizar mapeo en `nominasService.getEmpleados`
-- [ ] Reemplazar cálculo hardcodeado en `NominasPage`
-- [ ] Nueva columna "Cargas Soc." en `EmpleadosTable`
-- [ ] Sección cargas sociales en `NuevoEmpleadoModal`
-- [ ] Crear `EditarEmpleadoModal.tsx` con pre-fill + cargas sociales
-- [ ] Test: `EditarEmpleadoModal` renderiza y envía PATCH
-- [ ] `tsc` GREEN
+- [x] Actualizar `Empleado` en `src/types/nomina.types.ts`
+  - Agregar `cargasSocialesPct: number`, `cargasSocialesMonto: number | null`, helper `cargasSocialesCalculado()`
+- [x] Reemplazar cálculo hardcodeado en `NominasPage`
+- [x] Nueva columna "Cargas Soc." en `EmpleadosTable`
+- [x] Crear `EditarEmpleadoModal.tsx` con pre-fill + cargas sociales
+- [x] Test: `EditarEmpleadoModal` renderiza y envía PATCH
+- [x] `tsc` GREEN
 
 ---
 
@@ -107,9 +105,12 @@
 
 > ⚠️ Prerequisito: Backend `PATCH/DELETE /servicios/:id`
 
-- [ ] Crear `EditarServicioModal.tsx`
-- [ ] Agregar botones en `ServiciosTable`
-- [ ] `tsc` GREEN
+- [x] Crear `NuevoServicioModal.tsx` con POST /servicios
+- [x] Crear `EditarServicioModal.tsx` con pre-fill + PATCH /servicios/item/:id
+- [x] Agregar botones Editar/Eliminar en `ServiciosTable`
+- [x] Wiring en `ServiciosPage.tsx` con `ConfirmDeleteModal` (DELETE /servicios/item/:id)
+- [x] Fix tipo vs categoria: servicio.tipo en lugar de servicio.categoria
+- [x] `tsc` GREEN
 
 ---
 
@@ -139,12 +140,12 @@
 |------|-------------|--------|
 | FASE 0 | ConfirmDeleteModal | ✅ Completado |
 | FASE 1 | Fix Sidebar | ✅ Completado |
-| FASE 2 | Cargas Sociales | ⬜ Pendiente (requiere backend) |
+| FASE 2 | Cargas Sociales | ✅ Completado |
 | FASE 3 | CRUD Alquileres Inmuebles | ✅ Completado |
 | FASE 4 | CRUD Alquileres Contratos/Pagos | ⬜ Pendiente (requiere backend) |
 | FASE 5 | CRUD Nóminas Empleados | ✅ Completado |
 | FASE 6 | CRUD Nóminas Guardias/Comp. | ⬜ Pendiente (requiere backend) |
 | FASE 7 | CRUD Proveedores | ✅ Completado |
-| FASE 8 | CRUD Servicios | ⬜ Pendiente (requiere backend) |
+| FASE 8 | CRUD Servicios | ✅ Completado |
 | FASE 9 | CRUD Tesorería Cuentas | ✅ Completado |
 | FASE 10 | Verificación final | ✅ Completado (parcial - backend fases pendientes) |
