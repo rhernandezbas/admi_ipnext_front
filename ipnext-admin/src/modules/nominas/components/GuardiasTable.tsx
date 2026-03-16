@@ -19,28 +19,34 @@ export function GuardiasTable({ guardias, empleados = [] }: { guardias: Guardia[
   const [sortDir, setSortDir] = useState<SortDir>('asc')
 
   const safeGuardias = Array.isArray(guardias) ? guardias : []
-  const empMap = Object.fromEntries(empleados.map((e) => [e.id, e.nombre]))
+  const empMap = useMemo(
+    () => Object.fromEntries(empleados.map((e) => [e.id, e.nombre])),
+    [empleados]
+  )
 
-  const nombreGuardia = (g: Guardia) => g.empleadoNombre ?? empMap[g.empleadoId] ?? g.empleadoId ?? ''
+  const getNombre = useMemo(
+    () => (g: Guardia) => g.empleadoNombre ?? empMap[g.empleadoId] ?? g.empleadoId ?? '',
+    [empMap]
+  )
 
   const filtradas = useMemo(() => {
     const mesStr = String(mes + 1).padStart(2, '0')
     const prefix = `${anio}-${mesStr}`
     return safeGuardias
       .filter((g) => g.fecha?.startsWith(prefix))
-      .filter((g) => nombreGuardia(g).toLowerCase().includes(busqueda.toLowerCase()))
-  }, [safeGuardias, mes, anio, busqueda])
+      .filter((g) => getNombre(g).toLowerCase().includes(busqueda.toLowerCase()))
+  }, [safeGuardias, mes, anio, busqueda, getNombre])
 
   const ordenadas = useMemo(() => {
     return [...filtradas].sort((a, b) => {
       let va: string | number, vb: string | number
-      if (sortKey === 'empleadoNombre') { va = nombreGuardia(a); vb = nombreGuardia(b) }
+      if (sortKey === 'empleadoNombre') { va = getNombre(a); vb = getNombre(b) }
       else { va = a[sortKey]; vb = b[sortKey] }
       if (va < vb) return sortDir === 'asc' ? -1 : 1
       if (va > vb) return sortDir === 'asc' ? 1 : -1
       return 0
     })
-  }, [filtradas, sortKey, sortDir])
+  }, [filtradas, sortKey, sortDir, getNombre])
 
   const totalHoras = filtradas.reduce((a, g) => a + g.horas, 0)
   const totalMonto = filtradas.reduce((a, g) => a + g.monto, 0)
@@ -109,7 +115,7 @@ export function GuardiasTable({ guardias, empleados = [] }: { guardias: Guardia[
               <tr><td colSpan={4} className="px-4 py-8 text-center text-[#7A7A7A]">Sin guardias en {MESES[mes]} {anio}</td></tr>
             ) : ordenadas.map((g) => (
               <tr key={g.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
-                <td className="px-4 py-3 font-medium">{nombreGuardia(g)}</td>
+                <td className="px-4 py-3 font-medium">{getNombre(g)}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{g.fecha}</td>
                 <td className="px-4 py-3">{g.horas}h</td>
                 <td className="px-4 py-3 font-semibold">${formatARS(g.monto)}</td>
