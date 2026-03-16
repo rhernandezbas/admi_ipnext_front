@@ -1,6 +1,8 @@
 import axios from 'axios'
 
 function toCamel(s: string): string {
+  // Full uppercase (e.g. "ID", "URL") → all lowercase
+  if (s === s.toUpperCase()) return s.toLowerCase()
   return s.charAt(0).toLowerCase() + s.slice(1)
 }
 
