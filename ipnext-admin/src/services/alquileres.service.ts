@@ -4,11 +4,31 @@ import type { Inmueble, ContratoAlquiler, PagoAlquiler, VencimientoAlquiler } fr
 export const alquileresService = {
   getAll: () => api.get<Inmueble[]>('/alquileres').then((r) => r.data),
 
-  getContratos: () =>
-    api.get<ContratoAlquiler[]>('/alquileres/contratos').then((r) => r.data),
+  getContratos: async () => {
+    const [contratos, inmuebles] = await Promise.all([
+      api.get<ContratoAlquiler[]>('/alquileres/contratos').then((r) => r.data as ContratoAlquiler[]),
+      api.get<Inmueble[]>('/alquileres').then((r) => r.data as Inmueble[]),
+    ])
+    const map = Object.fromEntries(inmuebles.map((i) => [i.id, i]))
+    return contratos.map((c) => ({
+      ...c,
+      inmuebleNombre: map[c.inmuebleId]?.nombre ?? c.inmuebleId,
+      direccion: map[c.inmuebleId]?.direccion,
+      propietario: map[c.inmuebleId]?.propietario,
+    }))
+  },
 
-  getPagos: () =>
-    api.get<PagoAlquiler[]>('/alquileres/pagos').then((r) => r.data),
+  getPagos: async () => {
+    const [pagos, inmuebles] = await Promise.all([
+      api.get<PagoAlquiler[]>('/alquileres/pagos').then((r) => r.data as PagoAlquiler[]),
+      api.get<Inmueble[]>('/alquileres').then((r) => r.data as Inmueble[]),
+    ])
+    const map = Object.fromEntries(inmuebles.map((i) => [i.id, i]))
+    return pagos.map((p) => ({
+      ...p,
+      inmuebleNombre: map[p.inmuebleId]?.nombre ?? p.inmuebleId,
+    }))
+  },
 
   getVencimientos: () =>
     api.get<VencimientoAlquiler[]>('/alquileres/vencimientos').then((r) => r.data),

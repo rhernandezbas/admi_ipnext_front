@@ -75,7 +75,7 @@ export default function NominasPage() {
             guardiasQuery.isError ? error :
             <div>
               {puedeEscribir && <div className="mb-4"><Button onClick={() => setModalGuardia(true)}><Plus size={16} />Registrar Guardia</Button></div>}
-              <GuardiasTable guardias={guardiasQuery.data ?? []} />
+              <GuardiasTable guardias={guardiasQuery.data ?? []} empleados={empleados} />
             </div>
           )}
           {activeTab === 'compensaciones' && (
@@ -83,7 +83,7 @@ export default function NominasPage() {
             compensacionesQuery.isError ? error :
             <div>
               {puedeEscribir && <div className="mb-4"><Button onClick={() => setModalCompensacion(true)}><Plus size={16} />Registrar Compensación</Button></div>}
-              <CompensacionesTable compensaciones={compensacionesQuery.data ?? []} />
+              <CompensacionesTable compensaciones={compensacionesQuery.data ?? []} empleados={empleados} />
             </div>
           )}
         </div>

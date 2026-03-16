@@ -1,10 +1,11 @@
 import { KpiCard } from '@/components/ui/KpiCard'
 import { Shield, Clock, DollarSign, UserX } from 'lucide-react'
-import type { Guardia } from '@/types/nomina.types'
+import type { Guardia, Empleado } from '@/types/nomina.types'
 import { formatARS } from '@/lib/formatters'
 
-export function GuardiasTable({ guardias }: { guardias: Guardia[] }) {
+export function GuardiasTable({ guardias, empleados = [] }: { guardias: Guardia[]; empleados?: Empleado[] }) {
   const safeGuardias = Array.isArray(guardias) ? guardias : []
+  const empMap = Object.fromEntries(empleados.map((e) => [e.id, e.nombre]))
   const totalHoras = safeGuardias.reduce((a, g) => a + g.horas, 0)
   const totalMonto = safeGuardias.reduce((a, g) => a + g.monto, 0)
 
@@ -28,7 +29,7 @@ export function GuardiasTable({ guardias }: { guardias: Guardia[] }) {
           <tbody>
             {safeGuardias.map((g) => (
               <tr key={g.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
-                <td className="px-4 py-3 font-medium">{g.empleadoNombre ?? g.empleadoId}</td>
+                <td className="px-4 py-3 font-medium">{g.empleadoNombre ?? empMap[g.empleadoId] ?? g.empleadoId}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{g.fecha}</td>
                 <td className="px-4 py-3">{g.horas}h</td>
                 <td className="px-4 py-3 font-semibold">${formatARS(g.monto)}</td>

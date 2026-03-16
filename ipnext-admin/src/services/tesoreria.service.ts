@@ -8,7 +8,17 @@ import type {
 
 export const tesoreriaService = {
   getFlujoCaja: () =>
-    api.get<FlujoCaja[]>('/tesoreria/flujo-caja').then((r) => r.data),
+    api.get('/tesoreria/flujo-caja').then((r) => {
+      const raw = r.data as any[]
+      return raw.map((f, i) => ({
+        id: String(i),
+        fecha: f.fecha,
+        descripcion: f.ingresos > 0 ? 'Ingreso' : 'Egreso',
+        tipo: 'otro' as const,
+        monto: f.ingresos > 0 ? f.ingresos : f.egresos,
+        ingreso: f.ingresos > 0,
+      })) as FlujoCaja[]
+    }),
 
   getCuentas: () =>
     api.get<CuentaBancaria[]>('/tesoreria/cuentas').then((r) => r.data),
@@ -17,7 +27,15 @@ export const tesoreriaService = {
     api.get<MovimientoConciliacion[]>('/tesoreria/conciliacion').then((r) => r.data),
 
   getProyecciones: () =>
-    api.get<ProyeccionItem[]>('/tesoreria/proyecciones').then((r) => r.data),
+    api.get('/tesoreria/proyecciones').then((r) => {
+      const raw = r.data as any[]
+      return raw.map((p) => ({
+        mes: p.mes,
+        ingresos: 0,
+        egresos: p.egresosPrevistos ?? 0,
+        saldo: p.saldoProyectado ?? 0,
+      })) as ProyeccionItem[]
+    }),
 
   createCuenta: (data: Partial<CuentaBancaria>) =>
     api.post<CuentaBancaria>('/tesoreria/cuentas', data).then((r) => r.data),

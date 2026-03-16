@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/Badge'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { CalendarClock, DollarSign, CreditCard, ListOrdered } from 'lucide-react'
-import type { Compensacion, CompensacionTipo, CompensacionEstado } from '@/types/nomina.types'
+import type { Compensacion, CompensacionTipo, CompensacionEstado, Empleado } from '@/types/nomina.types'
 import { formatARS } from '@/lib/formatters'
 
 const tipoLabel: Record<CompensacionTipo, string> = {
@@ -17,8 +17,9 @@ function estadoBadge(estado: CompensacionEstado) {
   return <Badge variant="neutral">Rechazado</Badge>
 }
 
-export function CompensacionesTable({ compensaciones }: { compensaciones: Compensacion[] }) {
+export function CompensacionesTable({ compensaciones, empleados = [] }: { compensaciones: Compensacion[]; empleados?: Empleado[] }) {
   const safeCompensaciones = Array.isArray(compensaciones) ? compensaciones : []
+  const empMap = Object.fromEntries(empleados.map((e) => [e.id, e.nombre]))
   const totalMonto = safeCompensaciones.reduce((a, c) => a + Math.abs(c.monto), 0)
   const adelantos = safeCompensaciones.filter((c) => c.tipo === 'adelanto').reduce((a, c) => a + Math.abs(c.monto), 0)
   const pendientes = safeCompensaciones.filter((c) => c.estado === 'pendiente').length
@@ -43,7 +44,7 @@ export function CompensacionesTable({ compensaciones }: { compensaciones: Compen
           <tbody>
             {safeCompensaciones.map((c) => (
               <tr key={c.id} className="border-b border-[#E8E8E8] hover:bg-[#FAFAFA]">
-                <td className="px-4 py-3 font-medium">{c.empleadoNombre ?? c.empleadoId}</td>
+                <td className="px-4 py-3 font-medium">{c.empleadoNombre ?? empMap[c.empleadoId] ?? c.empleadoId}</td>
                 <td className="px-4 py-3"><Badge variant="neutral">{tipoLabel[c.tipo]}</Badge></td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{c.descripcion ?? '—'}</td>
                 <td className={`px-4 py-3 font-semibold`}>
