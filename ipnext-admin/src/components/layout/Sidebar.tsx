@@ -131,7 +131,7 @@ export function Sidebar() {
       </button>
 
       {/* Desktop sidebar */}
-      <div className="hidden lg:flex flex-shrink-0 min-h-screen">
+      <div className={`hidden lg:flex flex-shrink-0 min-h-screen transition-all duration-200 overflow-hidden ${sidebarCollapsed ? 'w-16' : 'w-60'}`}>
         {sidebarContent}
       </div>
 

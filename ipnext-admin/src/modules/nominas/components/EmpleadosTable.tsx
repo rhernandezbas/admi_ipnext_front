@@ -1,7 +1,7 @@
 import { Avatar } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
 import { KpiCard } from '@/components/ui/KpiCard'
-import { Users, DollarSign, TrendingUp, Clock } from 'lucide-react'
+import { Users, DollarSign, TrendingUp, Clock, Pencil, Trash2 } from 'lucide-react'
 import type { Empleado } from '@/types/nomina.types'
 import { formatARS, formatMiles, formatFecha } from '@/lib/formatters'
 interface NominaResumen {
@@ -15,9 +15,11 @@ interface NominaResumen {
 interface Props {
   empleados: Empleado[]
   resumen: NominaResumen
+  onEditar?: (e: Empleado) => void
+  onEliminar?: (e: Empleado) => void
 }
 
-export function EmpleadosTable({ empleados, resumen }: Props) {
+export function EmpleadosTable({ empleados, resumen, onEditar, onEliminar }: Props) {
   const safeEmpleados = Array.isArray(empleados) ? empleados : []
   return (
     <div>
@@ -32,7 +34,7 @@ export function EmpleadosTable({ empleados, resumen }: Props) {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-[#FAFAFA] border-b border-[#E8E8E8]">
-                {['Empleado', 'Rol', 'Puesto', 'Sueldo Bruto', 'Obra Social', 'Ingreso'].map((h) => (
+                {['Empleado', 'Rol', 'Puesto', 'Sueldo Bruto', 'Obra Social', 'Ingreso', ''].map((h) => (
                   <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-[#7A7A7A] uppercase tracking-wide">{h}</th>
                 ))}
               </tr>
@@ -52,6 +54,12 @@ export function EmpleadosTable({ empleados, resumen }: Props) {
                   <td className="px-4 py-3 font-semibold">${formatARS(e.sueldoBruto)}</td>
                   <td className="px-4 py-3 text-[#7A7A7A]">{e.obraSocial}</td>
                   <td className="px-4 py-3 text-[#7A7A7A]">{formatFecha(e.fechaIngreso)}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex gap-2">
+                      {onEditar && <button onClick={() => onEditar(e)} className="text-[#7A7A7A] hover:text-[#0D0D0D]" title="Editar"><Pencil size={15} /></button>}
+                      {onEliminar && <button onClick={() => onEliminar(e)} className="text-[#7A7A7A] hover:text-[#E42313]" title="Dar de baja"><Trash2 size={15} /></button>}
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

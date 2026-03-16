@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/Badge'
 import { KpiCard } from '@/components/ui/KpiCard'
-import { Home, CheckCircle, Clock, Calendar } from 'lucide-react'
+import { Home, CheckCircle, Clock, Calendar, Pencil, Trash2 } from 'lucide-react'
 import type { Inmueble, AlquilerEstado } from '@/types/alquiler.types'
 import { formatARS } from '@/lib/formatters'
 
@@ -10,7 +10,13 @@ function estadoBadge(estado: AlquilerEstado) {
   return <Badge variant="danger">VENCIDO</Badge>
 }
 
-export function InmueblesTable({ inmuebles }: { inmuebles: Inmueble[] }) {
+interface Props {
+  inmuebles: Inmueble[]
+  onEditar?: (i: Inmueble) => void
+  onEliminar?: (i: Inmueble) => void
+}
+
+export function InmueblesTable({ inmuebles, onEditar, onEliminar }: Props) {
   const safeInmuebles = Array.isArray(inmuebles) ? inmuebles : []
   const pagados = safeInmuebles.filter((i) => i.estado === 'pagado').length
   const pendientes = safeInmuebles.filter((i) => i.estado !== 'pagado').length
@@ -27,7 +33,7 @@ export function InmueblesTable({ inmuebles }: { inmuebles: Inmueble[] }) {
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-[#FAFAFA] border-b border-[#E8E8E8]">
-              {['Inmueble / Dirección', 'Propietario', 'Uso', 'Alquiler/Mes', 'Próx. Ajuste', 'CBU / Alias', 'Estado'].map((h) => (
+              {['Inmueble / Dirección', 'Propietario', 'Uso', 'Alquiler/Mes', 'Próx. Ajuste', 'CBU / Alias', 'Estado', ''].map((h) => (
                 <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-[#7A7A7A] uppercase tracking-wide">{h}</th>
               ))}
             </tr>
@@ -42,6 +48,12 @@ export function InmueblesTable({ inmuebles }: { inmuebles: Inmueble[] }) {
                 <td className="px-4 py-3 text-[#7A7A7A]">{i.proximoAjuste}</td>
                 <td className="px-4 py-3 text-xs text-[#7A7A7A]">{i.cbu}</td>
                 <td className="px-4 py-3">{estadoBadge(i.estado)}</td>
+                <td className="px-4 py-3">
+                  <div className="flex gap-2">
+                    {onEditar && <button onClick={() => onEditar(i)} className="text-[#7A7A7A] hover:text-[#0D0D0D]" title="Editar"><Pencil size={15} /></button>}
+                    {onEliminar && <button onClick={() => onEliminar(i)} className="text-[#7A7A7A] hover:text-[#E42313]" title="Eliminar"><Trash2 size={15} /></button>}
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>

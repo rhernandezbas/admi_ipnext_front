@@ -10,7 +10,9 @@ import { ConciliacionTable } from './components/ConciliacionTable'
 import { ProyeccionesTable } from './components/ProyeccionesTable'
 import { useFlujoCaja, useCuentasBancarias, useConciliacion, useProyecciones } from '@/hooks/useTesoreria'
 import { RegistrarMovimientoModal } from './components/RegistrarMovimientoModal'
+import { EditarCuentaModal } from './components/EditarCuentaModal'
 import { usePermiso } from '@/hooks/usePermiso'
+import type { CuentaBancaria } from '@/types/tesoreria.types'
 
 const tabs = [
   { id: 'flujo', label: 'Flujo de Caja' },
@@ -22,6 +24,7 @@ const tabs = [
 export default function TesoreriaPage() {
   const [activeTab, setActiveTab] = useState('flujo')
   const [modalMovimiento, setModalMovimiento] = useState(false)
+  const [cuentaEditar, setCuentaEditar] = useState<CuentaBancaria | null>(null)
   const puedeEscribir = usePermiso('tesoreria', 'escritura')
   const flujoCajaQuery = useFlujoCaja()
   const cuentasQuery = useCuentasBancarias()
@@ -56,7 +59,7 @@ export default function TesoreriaPage() {
           {activeTab === 'cuentas' && (
             cuentasQuery.isLoading ? loading :
             cuentasQuery.isError ? error :
-            <CuentasBancariasTable cuentas={cuentasQuery.data ?? []} />
+            <CuentasBancariasTable cuentas={cuentasQuery.data ?? []} onEditar={puedeEscribir ? setCuentaEditar : undefined} />
           )}
           {activeTab === 'conciliacion' && (
             conciliacionQuery.isLoading ? loading :
@@ -72,6 +75,7 @@ export default function TesoreriaPage() {
       </Card>
 
       <RegistrarMovimientoModal open={modalMovimiento} onClose={() => setModalMovimiento(false)} />
+      <EditarCuentaModal open={!!cuentaEditar} onClose={() => setCuentaEditar(null)} cuenta={cuentaEditar} />
     </div>
   )
 }

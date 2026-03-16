@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -11,7 +12,12 @@ import { VencimientosTable } from './components/VencimientosTable'
 import { useAlquileres, useContratosAlquiler, usePagosAlquiler, useVencimientos } from '@/hooks/useAlquileres'
 import { RegistrarPagoModal } from './components/RegistrarPagoModal'
 import { NuevoInmuebleModal } from './components/NuevoInmuebleModal'
+import { EditarInmuebleModal } from './components/EditarInmuebleModal'
+import { ConfirmDeleteModal } from '@/components/ui/ConfirmDeleteModal'
 import { usePermiso } from '@/hooks/usePermiso'
+import { api } from '@/lib/api'
+import { toast } from '@/lib/toast'
+import type { Inmueble } from '@/types/alquiler.types'
 
 const tabs = [
   { id: 'inmuebles', label: 'Inmuebles' },
@@ -24,7 +30,15 @@ export default function AlquileresPage() {
   const [activeTab, setActiveTab] = useState('inmuebles')
   const [modalPago, setModalPago] = useState(false)
   const [modalInmueble, setModalInmueble] = useState(false)
+  const [inmuebleEditar, setInmuebleEditar] = useState<Inmueble | null>(null)
+  const [inmuebleEliminar, setInmuebleEliminar] = useState<Inmueble | null>(null)
   const puedeEscribir = usePermiso('alquileres', 'escritura')
+  const qc = useQueryClient()
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => api.delete(`/alquileres/${id}`),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['alquileres'] }); toast.success('Inmueble eliminado'); setInmuebleEliminar(null) },
+    onError: () => toast.error('Error al eliminar inmueble'),
+  })
   const inmueblesQuery = useAlquileres()
   const contratosQuery = useContratosAlquiler()
   const pagosQuery = usePagosAlquiler()
@@ -53,7 +67,11 @@ export default function AlquileresPage() {
           {activeTab === 'inmuebles' && (
             inmueblesQuery.isLoading ? loading :
             inmueblesQuery.isError ? error :
-            <InmueblesTable inmuebles={inmueblesQuery.data ?? []} />
+            <InmueblesTable
+              inmuebles={inmueblesQuery.data ?? []}
+              onEditar={puedeEscribir ? setInmuebleEditar : undefined}
+              onEliminar={puedeEscribir ? setInmuebleEliminar : undefined}
+            />
           )}
           {activeTab === 'contratos' && (
             contratosQuery.isLoading ? loading :
@@ -79,6 +97,15 @@ export default function AlquileresPage() {
         inmuebles={inmueblesQuery.data ?? []}
       />
       <NuevoInmuebleModal open={modalInmueble} onClose={() => setModalInmueble(false)} />
+      <EditarInmuebleModal open={!!inmuebleEditar} onClose={() => setInmuebleEditar(null)} inmueble={inmuebleEditar} />
+      <ConfirmDeleteModal
+        open={!!inmuebleEliminar}
+        onClose={() => setInmuebleEliminar(null)}
+        onConfirm={() => inmuebleEliminar && deleteMutation.mutate(inmuebleEliminar.id)}
+        title="Eliminar Inmueble"
+        description={`¿Estás seguro de que deseas eliminar "${inmuebleEliminar?.nombre}"? Esta acción no se puede deshacer.`}
+        loading={deleteMutation.isPending}
+      />
     </div>
   )
 }

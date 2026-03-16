@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -10,9 +11,14 @@ import { CompensacionesTable } from './components/CompensacionesTable'
 import { useEmpleados, useGuardias, useCompensaciones } from '@/hooks/useNominas'
 import { LiquidarNominaModal } from './components/LiquidarNominaModal'
 import { NuevoEmpleadoModal } from './components/NuevoEmpleadoModal'
+import { EditarEmpleadoModal } from './components/EditarEmpleadoModal'
 import { RegistrarGuardiaModal } from './components/RegistrarGuardiaModal'
 import { RegistrarCompensacionModal } from './components/RegistrarCompensacionModal'
+import { ConfirmDeleteModal } from '@/components/ui/ConfirmDeleteModal'
 import { usePermiso } from '@/hooks/usePermiso'
+import { api } from '@/lib/api'
+import { toast } from '@/lib/toast'
+import type { Empleado } from '@/types/nomina.types'
 
 const tabs = [
   { id: 'empleados', label: 'Empleados' },
@@ -27,7 +33,15 @@ export default function NominasPage() {
   const [modalEmpleado, setModalEmpleado] = useState(false)
   const [modalGuardia, setModalGuardia] = useState(false)
   const [modalCompensacion, setModalCompensacion] = useState(false)
+  const [empleadoEditar, setEmpleadoEditar] = useState<Empleado | null>(null)
+  const [empleadoEliminar, setEmpleadoEliminar] = useState<Empleado | null>(null)
   const puedeEscribir = usePermiso('nominas', 'escritura')
+  const qc = useQueryClient()
+  const deleteEmpleadoMutation = useMutation({
+    mutationFn: (id: string) => api.delete(`/nominas/empleados/${id}`),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['nominas'] }); toast.success('Empleado dado de baja'); setEmpleadoEliminar(null) },
+    onError: () => toast.error('Error al dar de baja empleado'),
+  })
   const empleadosQuery = useEmpleados()
   const guardiasQuery = useGuardias()
   const compensacionesQuery = useCompensaciones()
@@ -61,7 +75,12 @@ export default function NominasPage() {
           {activeTab === 'empleados' && (
             empleadosQuery.isLoading ? loading :
             empleadosQuery.isError ? error :
-            <EmpleadosTable empleados={empleados} resumen={resumen} />
+            <EmpleadosTable
+              empleados={empleados}
+              resumen={resumen}
+              onEditar={puedeEscribir ? setEmpleadoEditar : undefined}
+              onEliminar={puedeEscribir ? setEmpleadoEliminar : undefined}
+            />
           )}
           {activeTab === 'liquidacion' && (
             <div className="text-center py-12 text-[#7A7A7A]">
@@ -91,6 +110,15 @@ export default function NominasPage() {
 
       <LiquidarNominaModal open={modalLiquidar} onClose={() => setModalLiquidar(false)} />
       <NuevoEmpleadoModal open={modalEmpleado} onClose={() => setModalEmpleado(false)} />
+      <EditarEmpleadoModal open={!!empleadoEditar} onClose={() => setEmpleadoEditar(null)} empleado={empleadoEditar} />
+      <ConfirmDeleteModal
+        open={!!empleadoEliminar}
+        onClose={() => setEmpleadoEliminar(null)}
+        onConfirm={() => empleadoEliminar && deleteEmpleadoMutation.mutate(empleadoEliminar.id)}
+        title="Dar de baja Empleado"
+        description={`¿Estás seguro de que deseas dar de baja a "${empleadoEliminar?.nombre}"? Esta acción no se puede deshacer.`}
+        loading={deleteEmpleadoMutation.isPending}
+      />
       <RegistrarGuardiaModal open={modalGuardia} onClose={() => setModalGuardia(false)} />
       <RegistrarCompensacionModal open={modalCompensacion} onClose={() => setModalCompensacion(false)} />
     </div>

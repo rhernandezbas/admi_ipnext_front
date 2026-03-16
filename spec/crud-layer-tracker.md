@@ -1,4 +1,4 @@
-# Tracker: CRUD Layer — Editar, Eliminar, Sidebar Fix y Cargas Sociales
+ # Tracker: CRUD Layer — Editar, Eliminar, Sidebar Fix y Cargas Sociales
 
 > Spec: `spec/crud-layer-spec.md`
 > Metodología: TDD — test (red) → implementar (green) → verificar tsc
@@ -8,26 +8,26 @@
 
 ## FASE 0 — ConfirmDeleteModal (componente compartido)
 
-- [ ] Crear `src/components/ui/ConfirmDeleteModal.tsx`
+- [x] Crear `src/components/ui/ConfirmDeleteModal.tsx`
   - Props: `open`, `onClose`, `onConfirm`, `title`, `description`, `loading`
   - Overlay + botones Cancelar / Eliminar (rojo)
   - Escape cierra
-- [ ] Test: `src/components/ui/__tests__/ConfirmDeleteModal.test.tsx`
+- [x] Test: `src/components/ui/__tests__/ConfirmDeleteModal.test.tsx`
   - Render cuando `open=true`
   - Click "Eliminar" llama `onConfirm`
   - Click "Cancelar" llama `onClose`
   - Escape llama `onClose`
-- [ ] `tsc` GREEN
+- [x] `tsc` GREEN
 
 ---
 
 ## FASE 1 — Fix Sidebar deslizable
 
-- [ ] Corregir wrapper desktop en `Sidebar.tsx` o `PageLayout.tsx`
+- [x] Corregir wrapper desktop en `Sidebar.tsx` o `PageLayout.tsx`
   - Width del wrapper sincronizado con `sidebarCollapsed`
   - `transition-all duration-200` en el wrapper
   - Sin corte visual durante la transición
-- [ ] `tsc` GREEN
+- [x] `tsc` GREEN
 
 ---
 
@@ -49,10 +49,11 @@
 
 ## FASE 3 — CRUD Alquileres — Inmuebles
 
-- [ ] Crear `EditarInmuebleModal.tsx`
-- [ ] Test: renderiza con datos pre-llenados, envía PATCH
-- [ ] Agregar botones Editar/Eliminar en `InmueblesTable`
-- [ ] `tsc` GREEN
+- [x] Crear `EditarInmuebleModal.tsx`
+- [x] Test: renderiza con datos pre-llenados, envía PATCH
+- [x] Agregar botones Editar/Eliminar en `InmueblesTable`
+- [x] Wiring en `AlquileresPage.tsx` con `ConfirmDeleteModal` para eliminar
+- [x] `tsc` GREEN
 
 ---
 
@@ -70,10 +71,13 @@
 
 ## FASE 5 — CRUD Nóminas — Empleados
 
-- [ ] Agregar botones Editar/Dar de baja en `EmpleadosTable`
+- [x] Crear `EditarEmpleadoModal.tsx` con pre-fill + PATCH /nominas/empleados/:id
+- [x] Test: renderiza con datos pre-llenados, envía PATCH
+- [x] Agregar botones Editar/Dar de baja en `EmpleadosTable`
   - Editar → abre `EditarEmpleadoModal`
   - Dar de baja → `ConfirmDeleteModal` → `DELETE /nominas/empleados/:id`
-- [ ] `tsc` GREEN
+- [x] Wiring en `NominasPage.tsx`
+- [x] `tsc` GREEN
 
 ---
 
@@ -91,9 +95,11 @@
 
 ## FASE 7 — CRUD Proveedores
 
-- [ ] Crear `EditarProveedorModal.tsx`
-- [ ] Agregar botones en `ProveedoresTable`
-- [ ] `tsc` GREEN
+- [x] Crear `EditarProveedorModal.tsx` con pre-fill + PATCH /proveedores/:id
+- [x] Test: renderiza con datos pre-llenados, envía PATCH
+- [x] Agregar botones Editar/Eliminar en `ProveedoresTable`
+- [x] Wiring en `ProveedoresPage.tsx` con `ConfirmDeleteModal`
+- [x] `tsc` GREEN
 
 ---
 
@@ -109,19 +115,21 @@
 
 ## FASE 9 — CRUD Tesorería — Cuentas Bancarias
 
-- [ ] Crear `EditarCuentaModal.tsx`
-- [ ] Agregar botón "Editar" en `CuentasBancariasTable`
-- [ ] `tsc` GREEN
+- [x] Crear `EditarCuentaModal.tsx` con pre-fill + PATCH /tesoreria/cuentas/:id
+- [x] Test: renderiza con datos pre-llenados, envía PATCH
+- [x] Agregar botón "Editar" en `CuentasBancariasTable`
+- [x] Wiring en `TesoreriaPage.tsx`
+- [x] `tsc` GREEN
 
 ---
 
 ## FASE 10 — Verificación final
 
-- [ ] `npm run test` → todos los tests pasan
-- [ ] `tsc -p tsconfig.app.json --noEmit` → 0 errores
-- [ ] Sidebar sin corte visual
-- [ ] Cargas sociales por empleado funcionando
-- [ ] CRUD completo en todos los módulos (con permisos)
+- [x] `npm run test` → 122 tests pasan
+- [x] `tsc -p tsconfig.app.json --noEmit` → 0 errores
+- [x] Sidebar sin corte visual
+- [ ] Cargas sociales por empleado funcionando (requiere backend)
+- [x] CRUD completo en módulos disponibles (Alquileres, Nóminas, Proveedores, Tesorería)
 
 ---
 
@@ -129,14 +137,14 @@
 
 | Fase | Descripción | Estado |
 |------|-------------|--------|
-| FASE 0 | ConfirmDeleteModal | ⬜ Pendiente |
-| FASE 1 | Fix Sidebar | ⬜ Pendiente |
+| FASE 0 | ConfirmDeleteModal | ✅ Completado |
+| FASE 1 | Fix Sidebar | ✅ Completado |
 | FASE 2 | Cargas Sociales | ⬜ Pendiente (requiere backend) |
-| FASE 3 | CRUD Alquileres Inmuebles | ⬜ Pendiente |
+| FASE 3 | CRUD Alquileres Inmuebles | ✅ Completado |
 | FASE 4 | CRUD Alquileres Contratos/Pagos | ⬜ Pendiente (requiere backend) |
-| FASE 5 | CRUD Nóminas Empleados | ⬜ Pendiente |
+| FASE 5 | CRUD Nóminas Empleados | ✅ Completado |
 | FASE 6 | CRUD Nóminas Guardias/Comp. | ⬜ Pendiente (requiere backend) |
-| FASE 7 | CRUD Proveedores | ⬜ Pendiente |
+| FASE 7 | CRUD Proveedores | ✅ Completado |
 | FASE 8 | CRUD Servicios | ⬜ Pendiente (requiere backend) |
-| FASE 9 | CRUD Tesorería Cuentas | ⬜ Pendiente |
-| FASE 10 | Verificación final | ⬜ Pendiente |
+| FASE 9 | CRUD Tesorería Cuentas | ✅ Completado |
+| FASE 10 | Verificación final | ✅ Completado (parcial - backend fases pendientes) |

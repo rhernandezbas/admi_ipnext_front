@@ -1,10 +1,12 @@
 import { Badge } from '@/components/ui/Badge'
 import { KpiCard } from '@/components/ui/KpiCard'
-import { Landmark, CheckCircle, TrendingUp, Activity } from 'lucide-react'
+import { Landmark, CheckCircle, TrendingUp, Activity, Pencil } from 'lucide-react'
 import type { CuentaBancaria } from '@/types/tesoreria.types'
 import { formatARS, formatMillones } from '@/lib/formatters'
 
-export function CuentasBancariasTable({ cuentas }: { cuentas: CuentaBancaria[] }) {
+interface Props { cuentas: CuentaBancaria[]; onEditar?: (c: CuentaBancaria) => void }
+
+export function CuentasBancariasTable({ cuentas, onEditar }: Props) {
   const safeCuentas = Array.isArray(cuentas) ? cuentas : []
   const total = safeCuentas.filter((c) => c.activa === true).reduce((a, c) => a + (c.saldoActual ?? 0), 0)
   const activas = safeCuentas.filter((c) => c.activa === true).length
@@ -23,7 +25,7 @@ export function CuentasBancariasTable({ cuentas }: { cuentas: CuentaBancaria[] }
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-[#FAFAFA] border-b border-[#E8E8E8]">
-              {['Banco / Empresa', 'Tipo Empresa', 'Nro. Cuenta / CBU', 'Saldo Actual', 'Últ. Actualización', 'Estado'].map((h) => (
+              {['Banco / Empresa', 'Tipo Empresa', 'Nro. Cuenta / CBU', 'Saldo Actual', 'Últ. Actualización', 'Estado', ''].map((h) => (
                 <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-[#7A7A7A] uppercase tracking-wide">{h}</th>
               ))}
             </tr>
@@ -37,6 +39,9 @@ export function CuentasBancariasTable({ cuentas }: { cuentas: CuentaBancaria[] }
                 <td className="px-4 py-3 font-semibold text-lg">${formatARS(c.saldoActual)}</td>
                 <td className="px-4 py-3 text-[#7A7A7A]">{c.ultimaActualizacion}</td>
                 <td className="px-4 py-3">{c.activa ? <Badge variant="success">Activo</Badge> : <Badge variant="neutral">Inactivo</Badge>}</td>
+                <td className="px-4 py-3">
+                  {onEditar && <button onClick={() => onEditar(c)} className="text-[#7A7A7A] hover:text-[#0D0D0D]" title="Editar"><Pencil size={15} /></button>}
+                </td>
               </tr>
             ))}
           </tbody>

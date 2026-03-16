@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -11,7 +12,12 @@ import { RankingChart } from './components/RankingChart'
 import { useProveedores, useContratos, useRanking } from '@/hooks/useProveedores'
 import { NuevoProveedorModal } from './components/NuevoProveedorModal'
 import { NuevoContratoProveedorModal } from './components/NuevoContratoProveedorModal'
+import { EditarProveedorModal } from './components/EditarProveedorModal'
+import { ConfirmDeleteModal } from '@/components/ui/ConfirmDeleteModal'
 import { usePermiso } from '@/hooks/usePermiso'
+import { api } from '@/lib/api'
+import { toast } from '@/lib/toast'
+import type { Proveedor } from '@/types/proveedor.types'
 
 const tabs = [
   { id: 'directorio', label: 'Directorio' },
@@ -24,7 +30,15 @@ export default function ProveedoresPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [modalProveedor, setModalProveedor] = useState(false)
   const [modalContrato, setModalContrato] = useState(false)
+  const [proveedorEditar, setProveedorEditar] = useState<Proveedor | null>(null)
+  const [proveedorEliminar, setProveedorEliminar] = useState<Proveedor | null>(null)
   const puedeEscribir = usePermiso('proveedores', 'escritura')
+  const qc = useQueryClient()
+  const deleteProveedorMutation = useMutation({
+    mutationFn: (id: string) => api.delete(`/proveedores/${id}`),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['proveedores'] }); toast.success('Proveedor eliminado'); setProveedorEliminar(null) },
+    onError: () => toast.error('Error al eliminar proveedor'),
+  })
   const proveedoresQuery = useProveedores()
   const contratosQuery = useContratos()
   const rankingQuery = useRanking()
@@ -60,6 +74,8 @@ export default function ProveedoresPage() {
                 proveedores={proveedores}
                 selectedId={selectedId}
                 onSelect={(id) => setSelectedId(selectedId === id ? null : id)}
+                onEditar={puedeEscribir ? setProveedorEditar : undefined}
+                onEliminar={puedeEscribir ? setProveedorEliminar : undefined}
               />
             )}
             {activeTab === 'contratos' && (
@@ -81,6 +97,15 @@ export default function ProveedoresPage() {
 
       <NuevoProveedorModal open={modalProveedor} onClose={() => setModalProveedor(false)} />
       <NuevoContratoProveedorModal open={modalContrato} onClose={() => setModalContrato(false)} />
+      <EditarProveedorModal open={!!proveedorEditar} onClose={() => setProveedorEditar(null)} proveedor={proveedorEditar} />
+      <ConfirmDeleteModal
+        open={!!proveedorEliminar}
+        onClose={() => setProveedorEliminar(null)}
+        onConfirm={() => proveedorEliminar && deleteProveedorMutation.mutate(proveedorEliminar.id)}
+        title="Eliminar Proveedor"
+        description={`¿Estás seguro de que deseas eliminar "${proveedorEliminar?.nombre}"? Esta acción no se puede deshacer.`}
+        loading={deleteProveedorMutation.isPending}
+      />
     </div>
   )
 }
